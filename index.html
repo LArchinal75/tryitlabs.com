@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try-IT Labs is coming // January 5, 2027</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #090d16;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --cyan-accent: #38bdf8;
+            --border-glow: rgba(56, 189, 248, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-image: 
+                radial-gradient(circle at 50% 40%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 48px 48px, 48px 48px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 720px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .status-tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--cyan-accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-size: clamp(2.3rem, 5.5vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+            line-height: 1.15;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            max-width: 580px;
+            margin-bottom: 40px;
+        }
+
+        /* Minimalist Countdown Display */
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            width: 100%;
+            max-width: 580px;
+            margin-bottom: 42px;
+        }
+
+        .time-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 24px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+        }
+
+        .number {
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .social-bar-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 600px;
+        }
+
+        .social-pill {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            transition: all 0.2s ease;
+            backdrop-filter: blur(6px);
+        }
+
+        .social-pill:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .pill-twitch {
+            color: #c084fc;
+            border-color: rgba(168, 85, 247, 0.35);
+        }
+        .pill-twitch:hover {
+            border-color: #a855f7;
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
+        }
+
+        .pill-youtube {
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.35);
+        }
+        .pill-youtube:hover {
+            border-color: #ef4444;
+            box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
+        }
+
+        .pill-x {
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.35);
+        }
+        .pill-x:hover {
+            border-color: #38bdf8;
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+        }
+
+        .pill-linkedin {
+            color: #60a5fa;
+            border-color: rgba(59, 130, 246, 0.35);
+        }
+        .pill-linkedin:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+        }
+
+        .pill-discord {
+            color: #a5b4fc;
+            border-color: rgba(99, 102, 241, 0.35);
+        }
+        .pill-discord:hover {
+            border-color: #6366f1;
+            box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+        }
+
+        @media (max-width: 500px) {
+            .countdown {
+                gap: 8px;
+            }
+            .time-card {
+                padding: 16px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="status-tag">// 🎙️ WORLD PREMIERE • TUESDAY, JAN 5, 2027 @ 9:30 PM EST</div>
+        <h1>Hands-On Skills That Compound for Life</h1>
+        <p class="subtitle">
+            Building an enterprise bare-metal cyber range live in public. Follow the mission across official channels below.
+        </p>
+
+        <div class="countdown">
+            <div class="time-card">
+                <span class="number" id="days">--</span>
+                <span class="label">Days</span>
+            </div>
+            <div class="time-card">
+                <span class="number" id="hours">--</span>
+                <span class="label">Hours</span>
+            </div>
+            <div class="time-card">
+                <span class="number" id="minutes">--</span>
+                <span class="label">Minutes</span>
+            </div>
+            <div class="time-card">
+                <span class="number" id="seconds">--</span>
+                <span class="label">Seconds</span>
+            </div>
+        </div>
+
+        <div class="social-bar-label">Join The Mission Across Official Channels</div>
+        <div class="social-links">
+            <a href="https://twitch.tv/tryitlabs" target="_blank" rel="noopener noreferrer" class="social-pill pill-twitch">
+                <span>📺 Twitch</span> ↗
+            </a>
+            <a href="https://youtube.com/@APTLee" target="_blank" rel="noopener noreferrer" class="social-pill pill-youtube">
+                <span>🔴 YouTube</span> ↗
+            </a>
+            <a href="https://x.com/APTLee_" target="_blank" rel="noopener noreferrer" class="social-pill pill-x">
+                <span>🐦 X / Twitter</span> ↗
+            </a>
+            <a href="https://www.linkedin.com/in/larchinal" target="_blank" rel="noopener noreferrer" class="social-pill pill-linkedin">
+                <span>💼 LinkedIn</span> ↗
+            </a>
+            <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="social-pill pill-discord">
+                <span>👾 Discord</span> ↗
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Official Twitch World Premiere: Tuesday, January 5, 2027 @ 9:30 PM EST
+        const launchDate = new Date('2027-01-05T21:30:00-05:00');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = launchDate.getTime() - now;
+
+            if (distance < 0) {
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
