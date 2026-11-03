@@ -1,7 +1,7 @@
 # 🌐 tryitlabs.com
 
-> **Official web landing for Try-IT Labs (`tryitlabs.com`) by Lee E. Archinal (`@APTLee`).**  
-> Hands-on Cybersecurity, Home SOC Architecture, Proxmox VE, Detection Engineering, and AI Automation.
+> **Official web landing for Try-IT Labs (`tryitlabs.com`) by `@APTLee`.**  
+> Let's gain skills and break stuff -- Together!
 
 ---
 
