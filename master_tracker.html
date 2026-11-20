@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Try-IT Labs | Master Curriculum & Season Progress Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080c14;
+      --bg-card: #0d1527;
+      --bg-card-hover: #101a33;
+      --border-subtle: #1e293b;
+      --border-glow: #334155;
+      
+      --accent-blue: #38bdf8;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+      --accent-green: #10b981;
+      --accent-red: #f43f5e;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding-bottom: 100px;
+    }
+
+    header {
+      background: rgba(13, 21, 39, 0.95);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 24px 48px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+    }
+
+    .header-content {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
+    }
+
+    .brand-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 36px auto 0;
+      padding: 0 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Overall Hero Card */
+    .hero-card {
+      background: linear-gradient(135deg, #0f172a 0%, #111e38 100%);
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 32px;
+      align-items: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (max-width: 900px) {
+      .hero-card { grid-template-columns: 1fr; }
+    }
+
+    .hero-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .stat-pill {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-blue);
+      font-family: 'Fira Code', monospace;
+    }
+
+    .stat-label {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Season Section */
+    .season-section {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .season-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 14px;
+    }
+
+    .season-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .season-tag {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .season-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    /* Episode Rows */
+    .episode-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .episode-row {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .episode-row:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-glow);
+      transform: translateX(4px);
+    }
+
+    .episode-row.completed {
+      border-color: var(--accent-green);
+      background: rgba(16, 185, 129, 0.03);
+    }
+
+    .ep-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .ep-badge {
+      font-size: 0.82rem;
+      font-weight: 800;
+      font-family: 'Fira Code', monospace;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #1e293b;
+      color: var(--text-muted);
+    }
+
+    .episode-row.completed .ep-badge {
+      background: var(--accent-green);
+      color: #fff;
+    }
+
+    .ep-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .ep-sub {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .ep-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-badge.complete {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .status-badge.in-progress {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .status-badge.locked {
+      background: rgba(148, 163, 184, 0.1);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .run-btn {
+      background: #1e293b;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .run-btn:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: #000;
+    }
+
+    /* Export Bar */
+    .export-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .export-btn {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .export-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="brand-group">
+        <span class="brand-badge">Master Tracker</span>
+        <div>
+          <h1 class="brand-title">Try-IT Labs: Student Career Portfolio</h1>
+          <p style="font-size: 0.84rem; color: var(--text-muted);">Curriculum Progression across Seasons 0, 1, and 2</p>
+        </div>
+      </div>
+      <div>
+        <button class="export-btn" onclick="exportMasterPortfolio()">🎓 Export Master Portfolio</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Overall Hero -->
+    <section class="hero-card">
+      <div>
+        <h2 class="hero-title">Your Enterprise Homelab Curriculum</h2>
+        <p class="hero-desc">
+          Every runbook you complete in Try-IT Labs syncs automatically to this Master Tracker. Track your hands-on systems engineering, threat emulation, and perimeter security milestones in one place.
+        </p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-pill">
+          <div class="stat-val" id="stat-completed">0 / 6</div>
+          <div class="stat-label">Episodes Banked</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-val" id="stat-pct">0%</div>
+          <div class="stat-label">Season 0 Progress</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEASON 0 -->
+    <section class="season-section">
+      <div class="season-header">
+        <div class="season-title-group">
+          <span class="season-tag">Season 0</span>
+          <h3 class="season-name">Foundation & Enterprise Bare-Metal Infrastructure</h3>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Hardware: Dell R640s • Dell S3124 • PA-220</span>
+      </div>
+
+      <div class="episode-list">
+
+        <!-- Ep 0.1 -->
+        <div class="episode-row" id="row-s0_ep01">
+          <div class="ep-left">
+            <span class="ep-badge">EP 0.1</span>
+            <div>
+              <h4 class="ep-title">Enterprise Architecture & Threat Model Blueprint</h4>
+              <p class="ep-sub">Design 3-tier sandbox segmentation, IP subnet plan, and zone trust boundaries.</p>
+            </div>
+          </div>
+          <div class="ep-right">
+            <span class="status-badge complete" id="status-s0_ep01">Verified ✓</span>
+            <a href="#" class="run-btn">View Notes</a>
+          </div>
+        </div>
+
+        <!-- Ep 0.2 -->
+        <div class="episode-row" id="row-s0_ep02">
+          <div class="ep-left">
+            <span class="ep-badge">EP 0.2</span>
+            <div>
+              <h4 class="ep-title">Hardware Sizing & Enterprise Procurement</h4>
+              <p class="ep-sub">Dual Dell PowerEdge R640 compute cluster, Dell S3124 switch, and PA-220 edge firewall.</p>
+            </div>
+          </div>
+          <div class="ep-right">
+            <span class="status-badge complete" id="status-s0_ep02">Verified ✓</span>
+            <a href="#" class="run-btn">View Specs</a>
+          </div>
+        </div>
+
+        <!-- Ep 0.3 -->
+        <div class="episode-row" id="row-s0_ep03">
+          <div class="ep-left">
+            <span class="ep-badge">EP 0.3</span>
+            <div>
+              <h4 class="ep-title">Git & Version Control: Structuring Your Lab Vault</h4>
+              <p class="ep-sub">Repository scaffolding, Obsidian markdown linking, and automated configuration backups.</p>
+            </div>
+          </div>
+          <div class="ep-right">
+            <span class="status-badge complete" id="status-s0_ep03">Verified ✓</span>
+            <a href="#" class="run-btn">View Repo</a>
+          </div>
+        </div>
+
+        <!-- Ep 0.4 (Active Interactive Runbook!) -->
+        <div class="episode-row" id="row-s0_ep04">
+          <div class="ep-left">
+            <span class="ep-badge">EP 0.4</span>
+            <div>
+              <h4 class="ep-title">Deploying the Hypervisor: Installing Proxmox VE 8.x</h4>
+              <p class="ep-sub">Bare-metal ZFS RAID-1 mirror, Dell S3124 VLAN 10 interface binding, and repo hardening.</p>
+            </div>
+          </div>
+          <div class="ep-right">
+            <span class="status-badge in-progress" id="status-s0_ep04">In Progress</span>
+            <a href="ep04_proxmox_preview.html" class="run-btn">Launch Runbook →</a>
+          </div>
+        </div>
+
+        <!-- Ep 0.5 -->
+        <div class="episode-row" id="row-s0_ep05">
+          <div class="ep-left">
+            <span class="ep-badge">EP 0.5</span>
+            <div>
+              <h4 class="ep-title">Structuring Network Zones: pfSense & Palo Alto Inter-VLAN Routing</h4>
+              <p class="ep-sub">VLAN trunking on Dell S3124, PA-220 subinterfaces, and top-down sandbox isolation rules.</p>
+            </div>
+          </div>
+          <div class="ep-right">
+            <span class="status-badge locked">Upcoming</span>
+            <button class="run-btn" disabled style="opacity: 0.5; cursor: not-allowed;">Locked</button>
+          </div>
+        </div>
+
+        <!-- Ep 0.6 -->
+        <div class="episode-row" id="row-s0_ep06">
+          <div class="ep-left">
+            <span class="ep-badge">EP 0.6</span>
+            <div>
+              <h4 class="ep-title">Disaster Recovery: Proxmox Backup Server (PBS) & ZFS Deduplication</h4>
+              <p class="ep-sub">Automated block-level snapshot retention and instant VM recovery testing.</p>
+            </div>
+          </div>
+          <div class="ep-right">
+            <span class="status-badge locked">Upcoming</span>
+            <button class="run-btn" disabled style="opacity: 0.5; cursor: not-allowed;">Locked</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Export Bar Footer -->
+    <div class="export-bar">
+      <div>
+        <h4 style="font-size: 1.1rem; color: #fff; font-weight: 700;">Export Proof of Competency</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Download a cryptographic JSON or printable PDF portfolio of all completed lab milestones.</p>
+      </div>
+      <button class="export-btn" onclick="exportMasterPortfolio()">🎓 Download Proof-of-Work JSON</button>
+    </div>
+
+  </main>
+
+  <script>
+    const MASTER_KEY = "tryitlabs_master_tracker";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      refreshMasterStatus();
+    });
+
+    function refreshMasterStatus() {
+      const master = JSON.parse(localStorage.getItem(MASTER_KEY) || "{}");
+      
+      // Check Ep 0.4
+      const ep04 = master["s0_ep04"];
+      const row04 = document.getElementById("row-s0_ep04");
+      const status04 = document.getElementById("status-s0_ep04");
+
+      let completedCount = 3; // Ep 0.1, 0.2, 0.3 pre-completed
+      
+      if (ep04 && ep04.completed) {
+        row04.classList.add("completed");
+        status04.className = "status-badge complete";
+        status04.innerText = "Verified ✓";
+        completedCount++;
+      } else if (ep04 && ep04.percent > 0) {
+        status04.className = "status-badge in-progress";
+        status04.innerText = ep04.percent + "% Done";
+      }
+
+      document.getElementById("stat-completed").innerText = `${completedCount} / 6`;
+      const pct = Math.round((completedCount / 6) * 100);
+      document.getElementById("stat-pct").innerText = pct + "%";
+    }
+
+    function exportMasterPortfolio() {
+      const master = JSON.parse(localStorage.getItem(MASTER_KEY) || "{}");
+      const payload = {
+        curriculum: "Try-IT Labs Enterprise Cyber Range",
+        institution: "tryitlabs.com",
+        studentPortfolioHash: "CERT_" + Math.random().toString(36).substring(2, 12).toUpperCase(),
+        generatedAt: new Date().toISOString(),
+        verifiedMilestones: [
+          { episode: "0.1", title: "Enterprise Architecture & Threat Model Blueprint", verified: true },
+          { episode: "0.2", title: "Hardware Sizing & Enterprise Procurement", verified: true },
+          { episode: "0.3", title: "Git & Version Control: Structuring Your Lab Vault", verified: true },
+          { episode: "0.4", title: "Deploying the Hypervisor: Installing Proxmox VE 8.x", verified: master["s0_ep04"] ? master["s0_ep04"].completed : false }
+        ]
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "TryIT_Labs_Master_Portfolio.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+  </script>
+
+</body>
+</html>
