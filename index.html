@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Try-IT Labs with APTLee // Enterprise Homelab, SIEM & Backup Architecture</title>
-    
-    <!-- Primary SEO Meta Tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Try-IT Labs with APTLee // Enterprise Homelab, SIEM & Backup Architecture</title>
+  
+  <!-- Primary SEO Meta Tags -->
     <meta name="title" content="Try-IT Labs with APTLee // Enterprise Homelab, SIEM & Backup Architecture">
     <meta name="description" content="Try-IT Labs with APTLee: Building an enterprise bare-metal homelab live on Twitch. Hands-on Proxmox VE clustering, SIEM log telemetry, ZFS data backups & disaster recovery, pfSense network zones, and infrastructure automation.">
     <meta name="keywords" content="Try-IT Labs, APTLee, Enterprise Homelab, Proxmox VE, SIEM, Data Backups, Disaster Recovery, ZFS, pfSense, Network Segmentation, Subnetting, Bare Metal, Sysmon, Auditd, Infrastructure as Code, Terraform, Twitch Stream">
@@ -85,348 +85,527 @@
     </script>
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #090d16;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --cyan-accent: #38bdf8;
-            --border-glow: rgba(56, 189, 248, 0.25);
-        }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --win-teal: #008080;
+      --win-gray: #c0c0c0;
+      --win-gray-light: #dfdfdf;
+      --win-gray-dark: #808080;
+      --win-white: #ffffff;
+      --win-black: #000000;
+      --win-navy: #000080;
+      --win-blue-grad: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+      --dos-bg: #000000;
+      --dos-green: #00ff66;
+      --dos-amber: #ffb000;
+      --dos-cyan: #00ffff;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            background-image: 
-                radial-gradient(circle at 50% 40%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
-                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-            background-size: 100% 100%, 48px 48px, 48px 48px;
-            text-align: center;
-        }
+    body {
+      background-color: var(--win-teal);
+      background-image: 
+        radial-gradient(rgba(0, 0, 0, 0.3) 15%, transparent 16%),
+        radial-gradient(rgba(0, 0, 0, 0.3) 15%, transparent 16%);
+      background-size: 6px 6px;
+      background-position: 0 0, 3px 3px;
+      color: #000000;
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      font-size: 13px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      user-select: none;
+    }
 
-        .container {
-            max-width: 720px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    /* Windows 95 Push Buttons */
+    .win-btn {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+      padding: 5px 14px;
+      font-weight: 700;
+      font-size: 12px;
+      font-family: inherit;
+      color: #000000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
 
-        .status-tag {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            color: var(--cyan-accent);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
+    .win-btn:active {
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+      padding: 6px 13px 4px 15px;
+    }
 
-        h1 {
-            font-size: clamp(2.3rem, 5.5vw, 4rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            margin-bottom: 20px;
-            line-height: 1.15;
-            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    /* Top Shell Navigation / Shortcuts */
+    .top-strip {
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            line-height: 1.6;
-            max-width: 580px;
-            margin-bottom: 40px;
-        }
+    .desktop-shortcuts {
+      display: flex;
+      gap: 16px;
+    }
 
-        /* Minimalist Countdown Display */
-        .countdown {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            width: 100%;
-            max-width: 580px;
-            margin-bottom: 42px;
-        }
+    .desktop-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px #000;
+      cursor: pointer;
+      padding: 6px 10px;
+      border: 1px dotted transparent;
+    }
 
-        .time-card {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 24px 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
-        }
+    .desktop-icon:hover {
+      background: rgba(0, 0, 128, 0.4);
+      border-color: #ffffff;
+    }
 
-        .number {
-            font-family: 'Fira Code', monospace;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
+    .desktop-icon-img {
+      font-size: 26px;
+    }
 
-        .label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
+    /* Main Centered Windows 95 Application Window */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-        .social-bar-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #64748b;
-            font-weight: 700;
-            margin-bottom: 14px;
-        }
+    .win-window {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.7);
+      max-width: 760px;
+      width: 100%;
+      padding: 3px;
+    }
 
-        .social-links {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 680px;
-        }
+    .win-titlebar {
+      background: var(--win-blue-grad);
+      color: #ffffff;
+      padding: 4px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+    }
 
-        .social-pill {
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            border-radius: 24px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.03);
-            transition: all 0.2s ease;
-            backdrop-filter: blur(6px);
-        }
+    .win-controls {
+      display: flex;
+      gap: 3px;
+    }
 
-        .social-pill:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.08);
-        }
+    .win-ctrl-btn {
+      width: 18px;
+      height: 16px;
+      background: var(--win-gray);
+      border-top: 1px solid var(--win-white);
+      border-left: 1px solid var(--win-white);
+      border-right: 1px solid var(--win-black);
+      border-bottom: 1px solid var(--win-black);
+      font-size: 10px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      line-height: 1;
+      cursor: pointer;
+    }
 
-        .pill-twitch {
-            color: #c084fc;
-            border-color: rgba(168, 85, 247, 0.35);
-        }
-        .pill-twitch:hover {
-            border-color: #a855f7;
-            box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
-        }
+    .win-body {
+      padding: 24px;
+      background: var(--win-gray);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
 
-        .pill-youtube {
-            color: #f87171;
-            border-color: rgba(239, 68, 68, 0.35);
-        }
-        .pill-youtube:hover {
-            border-color: #ef4444;
-            box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
-        }
+    /* Premiere Status Tag */
+    .status-tag {
+      background: #ffffcc;
+      border: 1px solid #999900;
+      padding: 4px 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #333300;
+      margin-bottom: 16px;
+      box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+    }
 
-        .pill-x {
-            color: #38bdf8;
-            border-color: rgba(56, 189, 248, 0.35);
-        }
-        .pill-x:hover {
-            border-color: #38bdf8;
-            box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
-        }
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      color: #000080;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      text-shadow: 1px 1px 0px #ffffff;
+    }
 
-        .pill-linkedin {
-            color: #60a5fa;
-            border-color: rgba(59, 130, 246, 0.35);
-        }
-        .pill-linkedin:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
-        }
+    .subtitle {
+      color: #333333;
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      max-width: 580px;
+    }
 
-        .pill-discord {
-            color: #a5b4fc;
-            border-color: rgba(99, 102, 241, 0.35);
-        }
-        .pill-discord:hover {
-            border-color: #6366f1;
-            box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
-        }
+    /* 90s Digital LED / Sunken Countdown Display */
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 28px;
+    }
 
-        .pill-bluesky {
-            color: #38bdf8;
-            border-color: rgba(56, 189, 248, 0.35);
-        }
-        .pill-bluesky:hover {
-            border-color: #38bdf8;
-            box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
-        }
+    .time-card {
+      background: var(--dos-bg);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .pill-mastodon {
-            color: #c084fc;
-            border-color: rgba(192, 132, 252, 0.35);
-        }
-        .pill-mastodon:hover {
-            border-color: #a855f7;
-            box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
-        }
+    .number {
+      font-family: 'Fira Code', monospace;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: var(--dos-cyan);
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
 
-        .pill-github {
-            color: #e2e8f0;
-            border-color: rgba(226, 232, 240, 0.35);
-        }
-        .pill-github:hover {
-            border-color: #f8fafc;
-            box-shadow: 0 0 16px rgba(248, 250, 252, 0.25);
-        }
+    .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--dos-amber);
+      font-weight: 700;
+      font-family: 'Fira Code', monospace;
+    }
 
-        .pill-instagram {
-            color: #f472b6;
-            border-color: rgba(244, 114, 182, 0.35);
-        }
-        .pill-instagram:hover {
-            border-color: #f472b6;
-            box-shadow: 0 0 16px rgba(244, 114, 182, 0.25);
-        }
+    /* Social Channels Box */
+    .channels-group {
+      width: 100%;
+      border: 2px groove var(--win-white);
+      padding: 14px 16px 18px;
+      margin-top: 6px;
+      text-align: center;
+    }
 
-        .pill-tiktok {
-            color: #2dd4bf;
-            border-color: rgba(45, 212, 191, 0.35);
-        }
-        .pill-tiktok:hover {
-            border-color: #2dd4bf;
-            box-shadow: 0 0 16px rgba(45, 212, 191, 0.25);
-        }
+    .channels-legend {
+      font-weight: 800;
+      font-size: 11.5px;
+      color: #000080;
+      padding: 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-        @media (max-width: 500px) {
-            .countdown {
-                gap: 8px;
-            }
-            .time-card {
-                padding: 16px 6px;
-            }
-        }
-    </style>
+    .social-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    /* Windows 95 Bottom Taskbar */
+    .taskbar {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+      padding: 3px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .start-btn {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+      padding: 3px 10px;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .taskbar-items {
+      display: flex;
+      gap: 6px;
+      margin-left: 10px;
+      flex: 1;
+    }
+
+    .task-item {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+      padding: 3px 10px;
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .system-tray {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-gray-dark);
+      border-left: 2px solid var(--win-gray-dark);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .countdown-grid { gap: 6px; }
+      .number { font-size: 1.6rem; }
+      .taskbar-items { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="status-tag">// 🎙️ WORLD PREMIERE • TUESDAY, JAN 5, 2027 @ 9:30 PM EST</div>
-        <h1>Try-IT Labs with APTLee</h1>
-        <p class="subtitle">
-            Let's gain skills and break stuff — together!
-        </p>
-
-        <div class="countdown">
-            <div class="time-card">
-                <span class="number" id="days">--</span>
-                <span class="label">Days</span>
-            </div>
-            <div class="time-card">
-                <span class="number" id="hours">--</span>
-                <span class="label">Hours</span>
-            </div>
-            <div class="time-card">
-                <span class="number" id="minutes">--</span>
-                <span class="label">Minutes</span>
-            </div>
-            <div class="time-card">
-                <span class="number" id="seconds">--</span>
-                <span class="label">Seconds</span>
-            </div>
-        </div>
-
-        <div class="social-bar-label">Join The Mission Across Official Channels</div>
-        <div class="social-links">
-            <a href="https://twitch.tv/tryitlabs" target="_blank" rel="noopener noreferrer" class="social-pill pill-twitch">
-                <span>📺 Twitch</span> ↗
-            </a>
-            <a href="https://youtube.com/@APTLee" target="_blank" rel="noopener noreferrer" class="social-pill pill-youtube">
-                <span>🔴 YouTube</span> ↗
-            </a>
-            <a href="https://bsky.app/profile/tryitlabs.bsky.social" target="_blank" rel="noopener noreferrer" class="social-pill pill-bluesky">
-                <span>🦋 Bluesky</span> ↗
-            </a>
-            <a href="https://mastodon.social/@tryitlabs" target="_blank" rel="noopener noreferrer" class="social-pill pill-mastodon">
-                <span>🐘 Mastodon</span> ↗
-            </a>
-            <a href="https://x.com/APTLee_" target="_blank" rel="noopener noreferrer" class="social-pill pill-x">
-                <span>🐦 X / Twitter</span> ↗
-            </a>
-            <a href="https://www.linkedin.com/in/larchinal" target="_blank" rel="noopener noreferrer" class="social-pill pill-linkedin">
-                <span>💼 LinkedIn</span> ↗
-            </a>
-            <a href="https://github.com/LArchinal75/Try-IT" target="_blank" rel="noopener noreferrer" class="social-pill pill-github">
-                <span>🐙 GitHub</span> ↗
-            </a>
-            <a href="https://www.instagram.com/tryitlabs/" target="_blank" rel="noopener noreferrer" class="social-pill pill-instagram">
-                <span>📸 Instagram</span> ↗
-            </a>
-            <a href="https://www.tiktok.com/@tryitlabs" target="_blank" rel="noopener noreferrer" class="social-pill pill-tiktok">
-                <span>📱 TikTok</span> ↗
-            </a>
-            <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="social-pill pill-discord">
-                <span>👾 Discord</span> ↗
-            </a>
-        </div>
+  <!-- Top Desktop Quick Launchers -->
+  <div class="top-strip">
+    <div class="desktop-shortcuts">
+      <a href="ep04_proxmox_preview.html" class="desktop-icon">
+        <span class="desktop-icon-img">💾</span>
+        <span>Runbook_Ep04.exe</span>
+      </a>
+      <a href="master_tracker.html" class="desktop-icon">
+        <span class="desktop-icon-img">📊</span>
+        <span>Master_Tracker.exe</span>
+      </a>
+      <a href="https://github.com/LArchinal75/Try-IT" target="_blank" rel="noopener noreferrer" class="desktop-icon">
+        <span class="desktop-icon-img">📁</span>
+        <span>Lab_Vault (GitHub)</span>
+      </a>
     </div>
 
-    <script>
-        // Official Twitch World Premiere: Tuesday, January 5, 2027 @ 9:30 PM EST
-        const launchDate = new Date('2027-01-05T21:30:00-05:00');
+    <div style="font-family: 'Fira Code', monospace; font-size: 11px; color: #fff; text-shadow: 1px 1px 2px #000;">
+      Try-IT Labs OS [Version 4.0.95]
+    </div>
+  </div>
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = launchDate.getTime() - now;
+  <!-- Main Centered Windows 95 Application Window -->
+  <div class="main-wrapper">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>💾</span>
+          <span>C:\TRYIT\PREMIERE_COUNTDOWN.EXE</span>
+        </div>
+        <div class="win-controls">
+          <div class="win-ctrl-btn">_</div>
+          <div class="win-ctrl-btn">◻</div>
+          <div class="win-ctrl-btn">✕</div>
+        </div>
+      </div>
 
-            if (distance < 0) {
-                document.getElementById("days").innerText = "00";
-                document.getElementById("hours").innerText = "00";
-                document.getElementById("minutes").innerText = "00";
-                document.getElementById("seconds").innerText = "00";
-                return;
-            }
+      <div class="win-body">
+        <div class="status-tag">🎙️ WORLD PREMIERE • TUESDAY, JAN 5, 2027 @ 9:30 PM EST</div>
+        <h1>Try-IT Labs with APTLee</h1>
+        <p class="subtitle">
+          Building an enterprise bare-metal homelab live on Twitch. Proxmox VE clustering, SIEM log telemetry, ZFS data backups & disaster recovery. Let's gain skills and break stuff — together!
+        </p>
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        <!-- Sunken LED Countdown -->
+        <div class="countdown-grid">
+          <div class="time-card">
+            <span class="number" id="days">--</span>
+            <span class="label">Days</span>
+          </div>
+          <div class="time-card">
+            <span class="number" id="hours">--</span>
+            <span class="label">Hours</span>
+          </div>
+          <div class="time-card">
+            <span class="number" id="minutes">--</span>
+            <span class="label">Minutes</span>
+          </div>
+          <div class="time-card">
+            <span class="number" id="seconds">--</span>
+            <span class="label">Seconds</span>
+          </div>
+        </div>
 
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
-        }
+        <!-- Social Channels Group Box -->
+        <fieldset class="channels-group">
+          <legend class="channels-legend">Official Broadcast & Community Uplinks</legend>
+          <div class="social-links">
+            <a href="https://twitch.tv/tryitlabs" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>📺</span> Twitch
+            </a>
+            <a href="https://youtube.com/@APTLee" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>🔴</span> YouTube
+            </a>
+            <a href="https://bsky.app/profile/tryitlabs.bsky.social" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>🦋</span> Bluesky
+            </a>
+            <a href="https://mastodon.social/@tryitlabs" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>🐘</span> Mastodon
+            </a>
+            <a href="https://x.com/APTLee_" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>🐦</span> X / Twitter
+            </a>
+            <a href="https://www.linkedin.com/in/larchinal" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>💼</span> LinkedIn
+            </a>
+            <a href="https://github.com/LArchinal75/Try-IT" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>🐙</span> GitHub
+            </a>
+            <a href="https://www.instagram.com/tryitlabs/" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>📸</span> Instagram
+            </a>
+            <a href="https://www.tiktok.com/@tryitlabs" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>📱</span> TikTok
+            </a>
+            <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="win-btn">
+              <span>👾</span> Discord
+            </a>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
 
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-    </script>
+  <!-- Windows 95 Bottom Taskbar -->
+  <div class="taskbar">
+    <div style="display: flex; align-items: center;">
+      <div class="start-btn">
+        <span>🪟</span> <strong>Start</strong>
+      </div>
+      <div class="taskbar-items">
+        <div class="task-item">
+          <span>⏱️</span> <span>Premiere Countdown.exe</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="system-tray">
+      <span>🟢 Online</span>
+      <span id="sys-clock">19:30 EST</span>
+    </div>
+  </div>
+
+  <script>
+    // Official Twitch World Premiere: Tuesday, January 5, 2027 @ 9:30 PM EST
+    const launchDate = new Date('2027-01-05T21:30:00-05:00');
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = launchDate.getTime() - now;
+
+      if (distance < 0) {
+        document.getElementById("days").innerText = "00";
+        document.getElementById("hours").innerText = "00";
+        document.getElementById("minutes").innerText = "00";
+        document.getElementById("seconds").innerText = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+      document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+      document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+      document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Live Windows 95 System Tray Clock
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      const clockEl = document.getElementById('sys-clock');
+      if (clockEl) {
+        clockEl.innerText = `${hours}:${minutes} ${ampm}`;
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+
 </body>
 </html>
