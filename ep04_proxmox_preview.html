@@ -9,29 +9,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #080c14;
-      --bg-card: #0d1527;
-      --bg-card-hover: #101a33;
-      --border-subtle: #1e293b;
-      --border-glow: #334155;
-      
-      --baremetal-accent: #38bdf8;
-      --baremetal-bg: rgba(56, 189, 248, 0.08);
-      --baremetal-border: rgba(56, 189, 248, 0.35);
-      
-      --network-accent: #f59e0b;
-      --network-bg: rgba(245, 158, 11, 0.08);
-      --network-border: rgba(245, 158, 11, 0.35);
-      
-      --hardening-accent: #a855f7;
-      --hardening-bg: rgba(168, 85, 247, 0.08);
-      --hardening-border: rgba(168, 85, 247, 0.35);
-
-      --success-accent: #10b981;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --code-bg: #030712;
-      --why-highlight: #38bdf8;
+      --win-teal: #008080;
+      --win-gray: #c0c0c0;
+      --win-gray-light: #dfdfdf;
+      --win-gray-dark: #808080;
+      --win-white: #ffffff;
+      --win-black: #000000;
+      --win-navy: #000080;
+      --win-blue-grad: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+      --win-green-grad: linear-gradient(90deg, #006400 0%, #2e8b57 100%);
+      --dos-bg: #000000;
+      --dos-green: #00ff66;
+      --dos-amber: #ffb000;
+      --dos-cyan: #00ffff;
+      --dos-text: #f0f0f0;
     }
 
     * {
@@ -41,22 +32,83 @@
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.6;
-      padding-bottom: 120px;
+      background-color: var(--win-teal);
+      background-image: 
+        radial-gradient(rgba(0, 0, 0, 0.3) 15%, transparent 16%),
+        radial-gradient(rgba(0, 0, 0, 0.3) 15%, transparent 16%);
+      background-size: 6px 6px;
+      background-position: 0 0, 3px 3px;
+      color: #000000;
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      padding-bottom: 80px;
     }
 
-    /* Sticky Header */
+    /* 3D Bevel Utilities */
+    .bevel-raised {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+    }
+
+    .bevel-sunken {
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+    }
+
+    .bevel-groove {
+      border: 2px groove var(--win-white);
+      padding: 12px;
+      margin-top: 8px;
+    }
+
+    /* Windows 95 Push Buttons */
+    .win-btn {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+      padding: 4px 12px;
+      font-weight: 700;
+      font-size: 12px;
+      font-family: inherit;
+      color: #000000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .win-btn:active, .win-btn.pressed {
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+      padding: 5px 11px 3px 13px;
+    }
+
+    /* Windows 95 Top Taskbar / Shell Header */
     header {
-      background: rgba(13, 21, 39, 0.95);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 18px 48px;
+      background: var(--win-gray);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      padding: 4px 16px;
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(14px);
     }
 
     .header-content {
@@ -66,515 +118,492 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 12px;
     }
 
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
     }
 
-    .brand-badge {
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      color: #fff;
+    .start-btn {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+      padding: 3px 10px;
       font-weight: 800;
-      font-size: 0.85rem;
-      padding: 6px 14px;
-      border-radius: 8px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    .start-logo {
+      font-size: 15px;
+    }
+
+    .task-bar-item {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+      padding: 4px 12px;
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .brand-title {
-      font-size: 1.35rem;
+      font-size: 13px;
       font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.02em;
+      color: #000;
     }
 
     .mission-meta {
-      font-size: 0.84rem;
-      color: var(--text-muted);
-      margin-top: 2px;
+      font-size: 11px;
+      color: #333;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
+    /* Win95 Progress Bar (Segmented Blocks) */
     .progress-box {
       display: flex;
       align-items: center;
-      gap: 14px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid var(--border-subtle);
-      padding: 8px 18px;
-      border-radius: 24px;
+      gap: 10px;
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-gray-dark);
+      border-left: 2px solid var(--win-gray-dark);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 4px 10px;
     }
 
     .progress-bar-container {
-      width: 160px;
-      height: 10px;
-      background: #1e293b;
-      border-radius: 5px;
+      width: 140px;
+      height: 18px;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
       overflow: hidden;
+      padding: 1px;
     }
 
     .progress-bar-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #38bdf8, #10b981);
-      transition: width 0.35s ease;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--win-navy) 0px,
+        var(--win-navy) 8px,
+        var(--win-white) 8px,
+        var(--win-white) 10px
+      );
+      transition: width 0.3s ease;
     }
 
     .progress-text {
-      font-size: 0.84rem;
+      font-size: 11px;
       font-weight: 700;
-      color: var(--text-muted);
+      font-family: 'Fira Code', monospace;
     }
 
-    .action-btn {
-      background: #1e293b;
-      border: 1px solid var(--border-subtle);
-      color: var(--text-main);
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 0.82rem;
+    /* System Tray Clock */
+    .system-tray {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-gray-dark);
+      border-left: 2px solid var(--win-gray-dark);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 3px 8px;
+      font-size: 11px;
       font-weight: 600;
-      cursor: pointer;
+      font-family: 'Fira Code', monospace;
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s ease;
-      text-decoration: none;
     }
 
-    .action-btn:hover {
-      background: #334155;
-      border-color: #475569;
-    }
-
-    .action-btn.export-btn {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.4);
-      color: #6ee7b7;
-    }
-
-    .action-btn.export-btn:hover {
-      background: rgba(16, 185, 129, 0.3);
-      color: #fff;
-    }
-
-    /* Collapsible Quick Start Guide */
+    /* Tip of the Day / Quick Start Banner */
     .guide-banner {
       max-width: 1480px;
-      margin: 24px auto 0;
-      padding: 0 48px;
+      margin: 16px auto 0;
+      padding: 0 24px;
     }
 
     .guide-container {
-      background: linear-gradient(180deg, #0f172a 0%, #0b1120 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+      padding: 3px;
     }
 
-    .guide-header {
-      padding: 14px 24px;
+    .guide-titlebar {
+      background: var(--win-navy);
+      color: #fff;
+      padding: 3px 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-weight: 700;
+      font-size: 12px;
       cursor: pointer;
       user-select: none;
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .guide-title {
-      font-size: 0.92rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #e2e8f0;
-    }
-
-    .guide-toggle-badge {
-      font-size: 0.76rem;
-      color: var(--baremetal-accent);
-      background: rgba(56, 189, 248, 0.1);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: 600;
     }
 
     .guide-body {
-      padding: 20px 24px;
+      padding: 12px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 0.86rem;
+      gap: 12px;
+      background: var(--win-gray);
     }
 
     @media (max-width: 1024px) {
-      .guide-body {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .guide-body { grid-template-columns: repeat(2, 1fr); }
     }
-
     @media (max-width: 640px) {
-      .guide-body {
-        grid-template-columns: 1fr;
-      }
+      .guide-body { grid-template-columns: 1fr; }
     }
 
     .guide-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid #1e293b;
-      padding: 14px;
-      border-radius: 10px;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
     .guide-card-title {
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-weight: 800;
+      font-size: 12px;
+      color: #000;
     }
 
     .guide-card-desc {
-      color: var(--text-muted);
-      line-height: 1.5;
+      font-size: 11px;
+      color: #333;
+      line-height: 1.4;
     }
 
-    /* Main Container (Full-Width Stacked Layout) */
+    /* Main Container (Full-Width Windows 95 Stacked Layout) */
     .runbook-container {
       max-width: 1480px;
-      margin: 28px auto 0;
-      padding: 0 48px;
+      margin: 18px auto 0;
+      padding: 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 36px;
+      gap: 22px;
     }
 
-    /* Stacked Full-Width Block Card */
+    /* Stacked Full-Width Block Card (A Windows 95 Window) */
     .stacked-block {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .stacked-block:hover {
-      border-color: var(--border-glow);
-      background: var(--bg-card-hover);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+      padding: 3px;
+      transition: all 0.2s ease;
     }
 
     .stacked-block.completed {
-      border-color: var(--success-accent);
-      background: rgba(16, 185, 129, 0.03);
+      box-shadow: 0 0 15px rgba(0, 255, 102, 0.5), 3px 3px 0px rgba(0, 0, 0, 0.4);
     }
 
-    /* Block Header Bar */
+    /* Block Window Titlebar */
     .block-header {
-      padding: 18px 28px;
+      background: var(--win-blue-grad);
+      color: #ffffff;
+      padding: 4px 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border-subtle);
+      font-weight: 700;
+      font-size: 13px;
     }
 
-    .stacked-block[data-lane="baremetal"] .block-header {
-      background: var(--baremetal-bg);
-      border-bottom-color: var(--baremetal-border);
-    }
-
-    .stacked-block[data-lane="network"] .block-header {
-      background: var(--network-bg);
-      border-bottom-color: var(--network-border);
-    }
-
-    .stacked-block[data-lane="hardening"] .block-header {
-      background: var(--hardening-bg);
-      border-bottom-color: var(--hardening-border);
+    .stacked-block.completed .block-header {
+      background: var(--win-green-grad);
     }
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
     .step-pill {
-      font-size: 0.78rem;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--win-black);
+      color: var(--dos-green);
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-top: 1px solid var(--win-gray-dark);
+      border-left: 1px solid var(--win-gray-dark);
+      border-right: 1px solid var(--win-white);
+      border-bottom: 1px solid var(--win-white);
     }
 
-    .stacked-block[data-lane="baremetal"] .step-pill { color: var(--baremetal-accent); }
-    .stacked-block[data-lane="network"] .step-pill { color: var(--network-accent); }
-    .stacked-block[data-lane="hardening"] .step-pill { color: var(--hardening-accent); }
-
     .block-title {
-      font-size: 1.25rem;
+      font-size: 13px;
       font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.3px;
+    }
+
+    .window-ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .win-ctrl-btn {
+      width: 18px;
+      height: 16px;
+      background: var(--win-gray);
+      border-top: 1px solid var(--win-white);
+      border-left: 1px solid var(--win-white);
+      border-right: 1px solid var(--win-black);
+      border-bottom: 1px solid var(--win-black);
+      font-size: 10px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      line-height: 1;
+      cursor: default;
     }
 
     .check-btn {
-      background: #1e293b;
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      padding: 8px 16px;
-      border-radius: 8px;
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+      color: #000;
+      padding: 3px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 700;
-      transition: all 0.2s ease;
+      gap: 6px;
     }
 
-    .check-btn:hover {
-      border-color: var(--success-accent);
-      color: #fff;
+    .check-btn:active {
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
     }
 
     .stacked-block.completed .check-btn {
-      background: var(--success-accent);
-      border-color: var(--success-accent);
-      color: #fff;
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+      color: #006400;
+      background: #e6ffe6;
     }
 
-    /* Block Body Content (2 Panes: Context Left, Execution Right) */
+    /* Window Body Layout */
     .block-body {
-      padding: 28px;
+      padding: 16px;
       display: grid;
-      grid-template-columns: 1.05fr 1.35fr;
-      gap: 32px;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 20px;
+      background: var(--win-gray);
     }
 
     @media (max-width: 1200px) {
-      .block-body {
-        grid-template-columns: 1fr;
-      }
+      .block-body { grid-template-columns: 1fr; }
     }
 
-    /* Context Column */
+    /* Left Context Pane */
     .context-pane {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 12px;
     }
 
     .section-tag {
-      font-size: 0.75rem;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--text-muted);
+      color: #000080;
       display: flex;
       align-items: center;
       gap: 6px;
+      border-bottom: 1px solid #808080;
+      padding-bottom: 2px;
     }
 
     .context-desc {
-      font-size: 0.95rem;
-      color: #cbd5e1;
-      line-height: 1.65;
+      font-size: 12px;
+      color: #111;
+      line-height: 1.6;
     }
 
-    /* Callout & Detail Boxes */
+    /* Windows 95 Callout Boxes (Info/Warning) */
     .callout-box {
-      border-radius: 10px;
-      padding: 14px 18px;
-      font-size: 0.88rem;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
+      padding: 10px 12px;
+      font-size: 12px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      border-left: 4px solid;
-    }
-
-    .callout-box.info {
-      background: rgba(56, 189, 248, 0.06);
-      border-left-color: var(--baremetal-accent);
-      color: #e0f2fe;
-    }
-
-    .callout-box.warning {
-      background: rgba(245, 158, 11, 0.06);
-      border-left-color: var(--network-accent);
-      color: #fef3c7;
-    }
-
-    .callout-box.tip {
-      background: rgba(168, 85, 247, 0.06);
-      border-left-color: var(--hardening-accent);
-      color: #f3e8ff;
+      gap: 4px;
     }
 
     .callout-title {
-      font-weight: 700;
-      font-size: 0.88rem;
+      font-weight: 800;
+      font-size: 12px;
+      color: #000;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    /* Technical Specs Table inside Context */
+    .callout-box.info { border-left: 4px solid #000080; }
+    .callout-box.warning { border-left: 4px solid #b8860b; background: #fffff0; }
+    .callout-box.tip { border-left: 4px solid #006400; }
+
+    /* Windows 95 Specs Table */
     .spec-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.84rem;
-      margin-top: 4px;
-      background: rgba(15, 23, 42, 0.4);
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      overflow: hidden;
+      font-size: 12px;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
     }
 
     .spec-table td {
-      padding: 9px 14px;
-      border-bottom: 1px solid #1e293b;
+      padding: 6px 10px;
+      border-bottom: 1px solid #dfdfdf;
     }
 
-    .spec-table tr:last-child td {
-      border-bottom: none;
-    }
+    .spec-table tr:last-child td { border-bottom: none; }
 
     .spec-table td:first-child {
       font-weight: 700;
-      color: var(--text-muted);
-      width: 38%;
-      background: rgba(0, 0, 0, 0.15);
+      color: #333;
+      width: 40%;
+      background: #f0f0f0;
+      border-right: 1px solid #dfdfdf;
     }
 
     .spec-table td:last-child {
-      color: #f1f5f9;
       font-family: 'Fira Code', monospace;
+      color: #000080;
+      font-weight: 600;
     }
 
-    /* Terminal & Code Pane */
+    /* Right Pane: DOS Terminal & Registry Breakdown */
     .terminal-pane {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 14px;
     }
 
+    /* Authentic MS-DOS / Command Prompt Window */
     .terminal-box {
-      background: var(--code-bg);
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      overflow: hidden;
+      background: var(--dos-bg);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
       font-family: 'Fira Code', monospace;
-      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
     }
 
     .terminal-header {
-      background: #090f1d;
-      padding: 10px 16px;
+      background: var(--win-gray-dark);
+      color: #ffffff;
+      padding: 3px 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #1e293b;
-    }
-
-    .terminal-dots {
-      display: flex;
-      gap: 7px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .dot-red { background: #ef4444; }
-    .dot-yellow { background: #f59e0b; }
-    .dot-green { background: #10b981; }
-
-    .terminal-host {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .copy-btn {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #e2e8f0;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.2s ease;
-    }
-
-    .copy-btn:hover {
-      background: #334155;
-      color: #fff;
+      border-bottom: 1px solid var(--win-black);
+      font-size: 11px;
+      font-weight: 700;
     }
 
     .terminal-body {
-      padding: 18px 20px;
+      padding: 14px;
       overflow-x: auto;
-      color: #f8fafc;
-      font-size: 0.88rem;
+      color: var(--dos-text);
+      font-size: 12.5px;
       line-height: 1.6;
       white-space: pre-wrap;
     }
 
-    .terminal-body .cmd { color: #38bdf8; font-weight: 600; }
-    .terminal-body .flag { color: #a78bfa; }
-    .terminal-body .arg { color: #fbbf24; }
-    .terminal-body .comment { color: #64748b; font-style: italic; }
+    .terminal-body .cmd { color: var(--dos-cyan); font-weight: 700; }
+    .terminal-body .flag { color: #ff79c6; }
+    .terminal-body .arg { color: var(--dos-amber); }
+    .terminal-body .comment { color: #808080; font-style: italic; }
 
-    /* DEEP-DIVE PARAMETER EXPLANATION SECTION */
+    /* Windows 95 Property Grid for Parameters */
     .param-breakdown-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid #1e293b;
-      border-radius: 12px;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
       overflow: hidden;
     }
 
     .param-breakdown-header {
-      background: rgba(30, 41, 59, 0.4);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #1e293b;
-    }
-
-    .param-breakdown-title {
-      font-size: 0.82rem;
-      font-weight: 700;
+      background: var(--win-gray);
+      border-bottom: 1px solid var(--win-gray-dark);
+      padding: 5px 10px;
+      font-weight: 800;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--why-highlight);
+      color: #000;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -583,99 +612,87 @@
     .param-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.84rem;
+      font-size: 12px;
     }
 
     .param-table th {
+      background: var(--win-gray);
+      border-top: 1px solid var(--win-white);
+      border-left: 1px solid var(--win-white);
+      border-right: 1px solid var(--win-black);
+      border-bottom: 1px solid var(--win-black);
+      padding: 4px 8px;
       text-align: left;
-      padding: 8px 14px;
-      background: rgba(0, 0, 0, 0.3);
-      color: var(--text-muted);
-      font-weight: 700;
-      font-size: 0.74rem;
+      font-size: 11px;
+      font-weight: 800;
+      color: #000;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid #1e293b;
     }
 
     .param-table td {
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(30, 41, 59, 0.6);
+      padding: 8px 10px;
+      border-bottom: 1px solid #e0e0e0;
       vertical-align: top;
       line-height: 1.5;
     }
 
-    .param-table tr:last-child td {
-      border-bottom: none;
-    }
+    .param-table tr:last-child td { border-bottom: none; }
 
     .param-name {
       font-family: 'Fira Code', monospace;
-      color: #38bdf8;
-      font-weight: 600;
-      font-size: 0.82rem;
+      color: #000080;
+      font-weight: 700;
+      font-size: 11.5px;
       white-space: nowrap;
     }
 
-    .param-val {
-      font-family: 'Fira Code', monospace;
-      color: #fbbf24;
-      font-weight: 600;
-      font-size: 0.82rem;
-    }
-
     .param-definition {
-      color: #cbd5e1;
-      font-size: 0.83rem;
+      color: #000;
+      font-size: 12px;
     }
 
     .param-why {
-      color: #94a3b8;
-      font-size: 0.82rem;
-      margin-top: 4px;
-    }
-
-    .param-why strong {
-      color: #e2e8f0;
+      color: #333;
+      font-size: 11.5px;
+      margin-top: 3px;
     }
 
     .why-tag {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 700;
+      background: #000080;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 2px;
       text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
       margin-right: 4px;
+      display: inline-block;
     }
 
     /* Output Verification Container */
     .output-box {
-      background: #060911;
-      border: 1px dashed #334155;
-      border-radius: 10px;
-      padding: 14px 18px;
+      background: #0a0a0a;
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 10px 12px;
       font-family: 'Fira Code', monospace;
-      font-size: 0.8rem;
-      color: #94a3b8;
+      font-size: 11.5px;
+      color: var(--dos-green);
       line-height: 1.5;
     }
 
     .output-title {
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 10.5px;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--success-accent);
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      color: var(--dos-amber);
+      margin-bottom: 4px;
     }
 
-    /* Modal for Lab Report Export */
+    /* Modal Dialog as a True Windows 95 Popup */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -683,325 +700,159 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.6);
       z-index: 200;
       justify-content: center;
       align-items: center;
-      backdrop-filter: blur(8px);
     }
 
-    .modal-box {
-      background: #0f172a;
-      border: 1px solid var(--border-glow);
-      border-radius: 16px;
-      max-width: 650px;
-      width: 90%;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    }
-
-    .modal-title {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .modal-content {
-      background: #030712;
-      border: 1px solid #1e293b;
-      padding: 16px;
-      border-radius: 10px;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.8rem;
-      color: #cbd5e1;
-      white-space: pre-wrap;
-      max-height: 280px;
-      overflow-y: auto;
-      line-height: 1.5;
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      header { padding: 16px 20px; }
-      .guide-banner { padding: 0 20px; }
-      .runbook-container { padding: 0 20px; }
-      .block-body { padding: 18px; }
-      .param-table th, .param-table td { padding: 8px 10px; }
-    }
-  
-    /* ENHANCED EXECUTIVE REPORT MODAL & PRINT STYLES */
     .modal-box.report-modal {
-      max-width: 1040px;
+      max-width: 980px;
       width: 95%;
       max-height: 90vh;
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.7);
+      padding: 3px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      padding: 28px 32px;
-      background: #0b1120;
-      border: 1px solid #334155;
+      gap: 10px;
     }
 
     .modal-header-bar {
+      background: var(--win-navy);
+      color: #fff;
+      padding: 3px 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #1e293b;
-      padding-bottom: 14px;
+      font-weight: 700;
+      font-size: 13px;
     }
 
     .report-tabs {
       display: flex;
-      gap: 8px;
+      gap: 4px;
+      padding: 0 8px;
+      margin-top: 4px;
     }
 
     .report-tab-btn {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #94a3b8;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 0.82rem;
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-gray);
+      padding: 4px 12px;
       font-weight: 700;
+      font-size: 12px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      color: #000;
     }
 
     .report-tab-btn.active {
-      background: #0284c7;
-      border-color: #38bdf8;
-      color: #fff;
+      border-bottom: 2px solid var(--win-white);
+      background: var(--win-white);
+      font-weight: 800;
     }
 
     .report-viewport {
       flex: 1;
       overflow-y: auto;
-      max-height: 60vh;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 24px;
-      background: #060a12;
+      max-height: 65vh;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 20px;
+      color: #000;
     }
 
-    /* Executive HTML Report Formatting */
-    .report-doc {
-      color: #cbd5e1;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
-      line-height: 1.65;
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 6px 10px;
+      background: var(--win-gray);
     }
-
-    .report-banner {
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #38bdf8;
-      display: inline-block;
-      margin-bottom: 16px;
-    }
-
-    .report-doc h2 {
-      font-size: 1.4rem;
-      color: #fff;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .report-doc h3 {
-      font-size: 1.1rem;
-      color: #38bdf8;
-      font-weight: 700;
-      margin: 22px 0 10px;
-      border-bottom: 1px solid #1e293b;
-      padding-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .report-doc h4 {
-      font-size: 0.95rem;
-      color: #f1f5f9;
-      font-weight: 700;
-      margin: 14px 0 6px;
-    }
-
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 20px;
-      font-size: 0.82rem;
-    }
-
-    @media (max-width: 800px) {
-      .meta-grid { grid-template-columns: 1fr; }
-    }
-
-    .meta-item strong {
-      color: #94a3b8;
-      display: block;
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .meta-item span {
-      color: #f8fafc;
-      font-weight: 600;
-      font-family: 'Fira Code', monospace;
-    }
-
-    .report-table-wrapper {
-      margin: 14px 0;
-      overflow-x: auto;
-    }
-
-    .report-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.84rem;
-    }
-
-    .report-table th {
-      background: #0f172a;
-      color: #94a3b8;
-      font-weight: 700;
-      padding: 8px 12px;
-      text-align: left;
-      border: 1px solid #1e293b;
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .report-table td {
-      padding: 9px 12px;
-      border: 1px solid #1e293b;
-      vertical-align: top;
-    }
-
-    .report-table td strong {
-      color: #f1f5f9;
-    }
-
-    .badge-pass {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10b981;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 0.74rem;
-      display: inline-block;
-    }
-
-    .badge-warn {
-      background: rgba(245, 158, 11, 0.15);
-      color: #f59e0b;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 0.74rem;
-      display: inline-block;
-    }
-
-    .code-chip {
-      background: #030712;
-      border: 1px solid #1e293b;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Fira Code', monospace;
-      color: #38bdf8;
-      font-size: 0.78rem;
-    }
-
-    
 
   </style>
 </head>
 <body>
 
   <!-- Sticky Header -->
+    <!-- Windows 95 Desktop Taskbar / Header -->
   <header>
     <div class="header-content">
       <div class="brand-group">
-        <span class="brand-badge">Season 0 • Ep 0.4</span>
-        <div>
-          <h1 class="brand-title">Try-IT Labs: Hypervisor Deployment</h1>
-          <p class="mission-meta">Full Bare-Metal Proxmox VE 8.x Architecture • Dell PowerEdge R640 Enterprise Cluster</p>
+        <div class="start-btn" title="Try-IT Labs Start Menu">
+          <span class="start-logo">🪟</span> <strong>Start</strong>
+        </div>
+        <div class="task-bar-item">
+          <span>💾</span> <span>Season 0 • Ep 0.4: Proxmox VE 8.x</span>
         </div>
       </div>
 
       <div class="header-actions">
         <div class="progress-box">
-          <span class="progress-text">Build Completion: <strong id="progress-percent" style="color: #fff;">0%</strong></span>
+          <span class="progress-text">Progress: <strong id="progress-percent">0%</strong></span>
           <div class="progress-bar-container">
             <div class="progress-bar-fill" id="progress-fill"></div>
           </div>
         </div>
 
-        <button class="action-btn export-btn" onclick="openExportModal()" title="Export Verified Lab Proof">
-          📄 Export Lab Report
+        <button class="win-btn" onclick="openExportModal()" title="Export Verified Lab Proof">
+          <span>📄</span> Export Lab Report...
         </button>
 
-        <a class="action-btn" href="master_tracker.html" title="View Master Curriculum Tracker">
-          📊 Master Tracker
+        <a class="win-btn" href="master_tracker.html" title="View Master Curriculum Tracker">
+          <span>📊</span> Master Tracker
         </a>
 
-        <button class="action-btn" onclick="resetProgress()" title="Clear checkmarks and start fresh">
-          🔄 Reset
+        <button class="win-btn" onclick="resetProgress()" title="Clear checkmarks and start fresh">
+          <span>🔄</span> Reset
         </button>
+
+        <div class="system-tray" id="sys-clock">
+          <span>19:25 EST</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Collapsible Quick Start Guide -->
+    <!-- Windows 95 Help & Quick Start Dialog -->
   <div class="guide-banner">
     <div class="guide-container">
-      <div class="guide-header" onclick="toggleGuide()">
-        <span class="guide-title">
-          <span>💡</span> <strong>How to Use This Annotated Runbook (Enterprise Architecture Edition)</strong>
-        </span>
-        <span class="guide-toggle-badge" id="guide-badge">Collapse Guide ▲</span>
+      <div class="guide-titlebar" onclick="toggleGuide()">
+        <span>💡 Tip of the Day: How to Use Try-IT Runbooks</span>
+        <div style="display: flex; gap: 2px;">
+          <div class="win-ctrl-btn" id="guide-badge">▲</div>
+        </div>
       </div>
 
       <div class="guide-body" id="guide-body">
         <div class="guide-card">
-          <span class="guide-card-title">1. 📋 1-Click Copy</span>
-          <p class="guide-card-desc">Click "Copy Command" on any code box to grab exact syntax. Paste directly into your terminal or iDRAC Virtual Console with zero syntax errors.</p>
+          <span class="guide-card-title">1. 📋 1-Click Clipboard</span>
+          <p class="guide-card-desc">Click "Copy Command" on any DOS/Bash prompt to copy exact syntax directly with zero errors.</p>
         </div>
 
         <div class="guide-card">
-          <span class="guide-card-title">2. 🔬 Deep-Dive Parameter Analysis</span>
-          <p class="guide-card-desc">Every configuration table breaks down WHAT each parameter is and WHY it holds that specific value, eliminating all guesswork.</p>
+          <span class="guide-card-title">2. 🔬 Deep-Dive Registry Analysis</span>
+          <p class="guide-card-desc">Every parameter table breaks down WHAT each value is and WHY it holds that specific enterprise value.</p>
         </div>
 
         <div class="guide-card">
-          <span class="guide-card-title">3. 💾 Persistent Auto-Save</span>
-          <p class="guide-card-desc">Every "Mark Complete" checkmark saves automatically to your personal browser storage. Refresh or reboot anytime—progress is preserved.</p>
+          <span class="guide-card-title">3. 💾 C:\LOCALSTORAGE Auto-Save</span>
+          <p class="guide-card-desc">Every "Mark Complete" checkmark saves automatically to your personal browser drive. Reboots preserve all state.</p>
         </div>
 
         <div class="guide-card">
-          <span class="guide-card-title">4. 🎓 Export Proof-of-Work</span>
-          <p class="guide-card-desc">Hit 100% completion and click "Export Lab Report" to download your verified cryptographic portfolio report for interviews.</p>
+          <span class="guide-card-title">4. 🎓 Executive Change Report</span>
+          <p class="guide-card-desc">Click "Export Lab Report" to generate an authentic post-implementation engineering report for your portfolio.</p>
         </div>
       </div>
     </div>
@@ -1014,13 +865,16 @@
     <section class="stacked-block" data-lane="baremetal" id="card-1">
       <div class="block-header">
         <div class="header-left">
-          <span class="step-pill">Step 01 • Bare-Metal Prep</span>
-          <h2 class="block-title">Cryptographic SHA256 Verification & Virtual Media Mount</h2>
+          <span class="step-pill">[Step 01 • Bare-Metal Prep]</span>
+          <span class="block-title">Cryptographic SHA256 Verification & Virtual Media Mount</span>
         </div>
-        <div class="header-actions">
+        <div class="window-ctrl-group">
           <button class="check-btn" onclick="toggleComplete('card-1')">
-            <span>Mark Complete</span> ✓
+            <span>Mark Complete</span>
           </button>
+          <div class="win-ctrl-btn">_</div>
+          <div class="win-ctrl-btn">◻</div>
+          <div class="win-ctrl-btn">✕</div>
         </div>
       </div>
 
@@ -1142,13 +996,16 @@
     <section class="stacked-block" data-lane="baremetal" id="card-2">
       <div class="block-header">
         <div class="header-left">
-          <span class="step-pill">Step 02 • Storage Tier</span>
-          <h2 class="block-title">Enterprise ZFS RAID-1 Root Partitioning & Sector Alignment</h2>
+          <span class="step-pill">[Step 02 • Storage Tier]</span>
+          <span class="block-title">Enterprise ZFS RAID-1 Root Partitioning & Sector Alignment</span>
         </div>
-        <div class="header-actions">
+        <div class="window-ctrl-group">
           <button class="check-btn" onclick="toggleComplete('card-2')">
-            <span>Mark Complete</span> ✓
+            <span>Mark Complete</span>
           </button>
+          <div class="win-ctrl-btn">_</div>
+          <div class="win-ctrl-btn">◻</div>
+          <div class="win-ctrl-btn">✕</div>
         </div>
       </div>
 
@@ -1287,13 +1144,16 @@ copies:             <span class="arg">1 (Base redundancy handled by mirror-0)</s
     <section class="stacked-block" data-lane="network" id="card-3">
       <div class="block-header">
         <div class="header-left">
-          <span class="step-pill">Step 03 • Network Plane</span>
-          <h2 class="block-title">Management Interface Binding & Dell S3124 VLAN 10 Port Assignment</h2>
+          <span class="step-pill">[Step 03 • Network Plane]</span>
+          <span class="block-title">Management Interface Binding & Dell S3124 VLAN 10 Port Assignment</span>
         </div>
-        <div class="header-actions">
+        <div class="window-ctrl-group">
           <button class="check-btn" onclick="toggleComplete('card-3')">
-            <span>Mark Complete</span> ✓
+            <span>Mark Complete</span>
           </button>
+          <div class="win-ctrl-btn">_</div>
+          <div class="win-ctrl-btn">◻</div>
+          <div class="win-ctrl-btn">✕</div>
         </div>
       </div>
 
@@ -1420,13 +1280,16 @@ DNS Server:            <span class="arg">10.10.10.1 (pfSense Unbound DNS Resolve
     <section class="stacked-block" data-lane="network" id="card-4">
       <div class="block-header">
         <div class="header-left">
-          <span class="step-pill">Step 04 • Virtual Switching</span>
-          <h2 class="block-title">Configuring the 802.1Q VLAN-Aware Linux Bridge (vmbr0)</h2>
+          <span class="step-pill">[Step 04 • Virtual Switching]</span>
+          <span class="block-title">Configuring the 802.1Q VLAN-Aware Linux Bridge (vmbr0)</span>
         </div>
-        <div class="header-actions">
+        <div class="window-ctrl-group">
           <button class="check-btn" onclick="toggleComplete('card-4')">
-            <span>Mark Complete</span> ✓
+            <span>Mark Complete</span>
           </button>
+          <div class="win-ctrl-btn">_</div>
+          <div class="win-ctrl-btn">◻</div>
+          <div class="win-ctrl-btn">✕</div>
         </div>
       </div>
 
@@ -1576,13 +1439,16 @@ DNS Server:            <span class="arg">10.10.10.1 (pfSense Unbound DNS Resolve
     <section class="stacked-block" data-lane="hardening" id="card-5">
       <div class="block-header">
         <div class="header-left">
-          <span class="step-pill">Step 05 • Package Management</span>
-          <h2 class="block-title">Purging Enterprise Repositories & Enabling Community Updates</h2>
+          <span class="step-pill">[Step 05 • Package Management]</span>
+          <span class="block-title">Purging Enterprise Repositories & Enabling Community Updates</span>
         </div>
-        <div class="header-actions">
+        <div class="window-ctrl-group">
           <button class="check-btn" onclick="toggleComplete('card-5')">
-            <span>Mark Complete</span> ✓
+            <span>Mark Complete</span>
           </button>
+          <div class="win-ctrl-btn">_</div>
+          <div class="win-ctrl-btn">◻</div>
+          <div class="win-ctrl-btn">✕</div>
         </div>
       </div>
 
@@ -1706,13 +1572,16 @@ EOF
     <section class="stacked-block" data-lane="hardening" id="card-6">
       <div class="block-header">
         <div class="header-left">
-          <span class="step-pill">Step 06 • Web GUI Optimization</span>
-          <h2 class="block-title">Silencing the "No Valid Subscription" Modal Dialog</h2>
+          <span class="step-pill">[Step 06 • Web GUI Optimization]</span>
+          <span class="block-title">Silencing the "No Valid Subscription" Modal Dialog</span>
         </div>
-        <div class="header-actions">
+        <div class="window-ctrl-group">
           <button class="check-btn" onclick="toggleComplete('card-6')">
-            <span>Mark Complete</span> ✓
+            <span>Mark Complete</span>
           </button>
+          <div class="win-ctrl-btn">_</div>
+          <div class="win-ctrl-btn">◻</div>
+          <div class="win-ctrl-btn">✕</div>
         </div>
       </div>
 
@@ -1877,6 +1746,7 @@ EOF
     // Initialize state on load
     document.addEventListener("DOMContentLoaded", () => {
       loadProgress();
+      updateClock();
       initGuideState();
     });
 
@@ -2729,153 +2599,779 @@ WHY CHOSEN:           Flushes minified JS assets cached in daemon RAM to load pa
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
           <style>
-            @page {
-              size: letter portrait;
-              margin: 0.65in 0.65in 0.65in 0.65in;
-            }
-            * { box-sizing: border-box; margin: 0; padding: 0; }
-            body {
-              font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-              color: #0f172a;
-              background: #ffffff;
-              font-size: 9.5pt;
-              line-height: 1.55;
-              padding: 10px;
-            }
-            .report-header {
-              border-bottom: 2px solid #0284c7;
-              padding-bottom: 12px;
-              margin-bottom: 16px;
-            }
-            .classification-badge {
-              display: inline-block;
-              background: #f0f9ff;
-              border: 1px solid #bae6fd;
-              color: #0284c7;
-              font-size: 7.5pt;
-              font-weight: 800;
-              letter-spacing: 0.08em;
-              text-transform: uppercase;
-              padding: 3px 8px;
-              border-radius: 4px;
-              margin-bottom: 8px;
-            }
-            h1 {
-              font-size: 16pt;
-              font-weight: 800;
-              color: #0f172a;
-              letter-spacing: -0.02em;
-              margin-bottom: 4px;
-            }
-            .report-subtitle {
-              font-size: 8.5pt;
-              color: #64748b;
-              margin-bottom: 12px;
-            }
-            .meta-box {
-              width: 100%;
-              border-collapse: collapse;
-              margin-bottom: 18px;
-              background: #f8fafc;
-              border: 1px solid #e2e8f0;
-              border-radius: 6px;
-            }
-            .meta-box td {
-              padding: 7px 12px;
-              border: 1px solid #e2e8f0;
-              font-size: 8.5pt;
-              width: 33.33%;
-            }
-            .meta-label {
-              color: #64748b;
-              font-size: 7pt;
-              font-weight: 700;
-              text-transform: uppercase;
-              letter-spacing: 0.04em;
-              display: block;
-              margin-bottom: 2px;
-            }
-            .meta-value {
-              font-weight: 600;
-              color: #0f172a;
-              font-family: 'Fira Code', monospace;
-            }
-            .badge-success {
-              color: #15803d;
-              font-weight: 700;
-              background: #dcfce7;
-              border: 1px solid #bbf7d0;
-              padding: 2px 6px;
-              border-radius: 4px;
-              font-size: 7.5pt;
-              display: inline-block;
-            }
-            h2 {
-              font-size: 11pt;
-              font-weight: 800;
-              color: #0369a1;
-              text-transform: uppercase;
-              letter-spacing: 0.04em;
-              border-bottom: 1px solid #cbd5e1;
-              padding-bottom: 4px;
-              margin-top: 18px;
-              margin-bottom: 8px;
-              page-break-after: avoid;
-            }
-            p { margin-bottom: 8px; text-align: justify; }
-            ol, ul { margin-left: 20px; margin-bottom: 10px; }
-            li { margin-bottom: 5px; }
-            table.data-table {
-              width: 100%;
-              border-collapse: collapse;
-              margin-top: 8px;
-              margin-bottom: 14px;
-              font-size: 8.5pt;
-            }
-            table.data-table th {
-              background: #f1f5f9;
-              color: #334155;
-              font-weight: 700;
-              text-align: left;
-              padding: 6px 10px;
-              border: 1px solid #cbd5e1;
-              font-size: 7.5pt;
-              text-transform: uppercase;
-              letter-spacing: 0.04em;
-            }
-            table.data-table td {
-              padding: 6px 10px;
-              border: 1px solid #e2e8f0;
-              vertical-align: top;
-              line-height: 1.45;
-            }
-            tr { page-break-inside: avoid; }
-            .code-inline {
-              font-family: 'Fira Code', monospace;
-              font-size: 7.8pt;
-              background: #f1f5f9;
-              border: 1px solid #e2e8f0;
-              padding: 1px 4px;
-              border-radius: 3px;
-              color: #0284c7;
-            }
-            .sign-off-box {
-              margin-top: 18px;
-              border-top: 1px dashed #cbd5e1;
-              padding-top: 12px;
-              display: flex;
-              justify-content: space-between;
-              page-break-inside: avoid;
-            }
-            .sign-line {
-              width: 45%;
-              border-top: 1px solid #94a3b8;
-              padding-top: 4px;
-              font-size: 8pt;
-              color: #64748b;
-              margin-top: 24px;
-            }
-          </style>
+    :root {
+      --win-teal: #008080;
+      --win-gray: #c0c0c0;
+      --win-gray-light: #dfdfdf;
+      --win-gray-dark: #808080;
+      --win-white: #ffffff;
+      --win-black: #000000;
+      --win-navy: #000080;
+      --win-blue-grad: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+      --win-green-grad: linear-gradient(90deg, #006400 0%, #2e8b57 100%);
+      --dos-bg: #000000;
+      --dos-green: #00ff66;
+      --dos-amber: #ffb000;
+      --dos-cyan: #00ffff;
+      --dos-text: #f0f0f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--win-teal);
+      background-image: 
+        radial-gradient(rgba(0, 0, 0, 0.3) 15%, transparent 16%),
+        radial-gradient(rgba(0, 0, 0, 0.3) 15%, transparent 16%);
+      background-size: 6px 6px;
+      background-position: 0 0, 3px 3px;
+      color: #000000;
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      padding-bottom: 80px;
+    }
+
+    /* 3D Bevel Utilities */
+    .bevel-raised {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+    }
+
+    .bevel-sunken {
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+    }
+
+    .bevel-groove {
+      border: 2px groove var(--win-white);
+      padding: 12px;
+      margin-top: 8px;
+    }
+
+    /* Windows 95 Push Buttons */
+    .win-btn {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+      padding: 4px 12px;
+      font-weight: 700;
+      font-size: 12px;
+      font-family: inherit;
+      color: #000000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .win-btn:active, .win-btn.pressed {
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+      padding: 5px 11px 3px 13px;
+    }
+
+    /* Windows 95 Top Taskbar / Shell Header */
+    header {
+      background: var(--win-gray);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      padding: 4px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1480px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .start-btn {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+      padding: 3px 10px;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    .start-logo {
+      font-size: 15px;
+    }
+
+    .task-bar-item {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+      padding: 4px 12px;
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #000;
+    }
+
+    .mission-meta {
+      font-size: 11px;
+      color: #333;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Win95 Progress Bar (Segmented Blocks) */
+    .progress-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-gray-dark);
+      border-left: 2px solid var(--win-gray-dark);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 4px 10px;
+    }
+
+    .progress-bar-container {
+      width: 140px;
+      height: 18px;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      overflow: hidden;
+      padding: 1px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--win-navy) 0px,
+        var(--win-navy) 8px,
+        var(--win-white) 8px,
+        var(--win-white) 10px
+      );
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Fira Code', monospace;
+    }
+
+    /* System Tray Clock */
+    .system-tray {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-gray-dark);
+      border-left: 2px solid var(--win-gray-dark);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Tip of the Day / Quick Start Banner */
+    .guide-banner {
+      max-width: 1480px;
+      margin: 16px auto 0;
+      padding: 0 24px;
+    }
+
+    .guide-container {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+      padding: 3px;
+    }
+
+    .guide-titlebar {
+      background: var(--win-navy);
+      color: #fff;
+      padding: 3px 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .guide-body {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      background: var(--win-gray);
+    }
+
+    @media (max-width: 1024px) {
+      .guide-body { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .guide-body { grid-template-columns: 1fr; }
+    }
+
+    .guide-card {
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .guide-card-title {
+      font-weight: 800;
+      font-size: 12px;
+      color: #000;
+    }
+
+    .guide-card-desc {
+      font-size: 11px;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    /* Main Container (Full-Width Windows 95 Stacked Layout) */
+    .runbook-container {
+      max-width: 1480px;
+      margin: 18px auto 0;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* Stacked Full-Width Block Card (A Windows 95 Window) */
+    .stacked-block {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+      padding: 3px;
+      transition: all 0.2s ease;
+    }
+
+    .stacked-block.completed {
+      box-shadow: 0 0 15px rgba(0, 255, 102, 0.5), 3px 3px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Block Window Titlebar */
+    .block-header {
+      background: var(--win-blue-grad);
+      color: #ffffff;
+      padding: 4px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .stacked-block.completed .block-header {
+      background: var(--win-green-grad);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .step-pill {
+      background: var(--win-black);
+      color: var(--dos-green);
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-top: 1px solid var(--win-gray-dark);
+      border-left: 1px solid var(--win-gray-dark);
+      border-right: 1px solid var(--win-white);
+      border-bottom: 1px solid var(--win-white);
+    }
+
+    .block-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .window-ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .win-ctrl-btn {
+      width: 18px;
+      height: 16px;
+      background: var(--win-gray);
+      border-top: 1px solid var(--win-white);
+      border-left: 1px solid var(--win-white);
+      border-right: 1px solid var(--win-black);
+      border-bottom: 1px solid var(--win-black);
+      font-size: 10px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      line-height: 1;
+      cursor: default;
+    }
+
+    .check-btn {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-gray-light), inset -1px -1px var(--win-gray-dark);
+      color: #000;
+      padding: 3px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .check-btn:active {
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+    }
+
+    .stacked-block.completed .check-btn {
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark), inset -1px -1px var(--win-gray-light);
+      color: #006400;
+      background: #e6ffe6;
+    }
+
+    /* Window Body Layout */
+    .block-body {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 20px;
+      background: var(--win-gray);
+    }
+
+    @media (max-width: 1200px) {
+      .block-body { grid-template-columns: 1fr; }
+    }
+
+    /* Left Context Pane */
+    .context-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #000080;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #808080;
+      padding-bottom: 2px;
+    }
+
+    .context-desc {
+      font-size: 12px;
+      color: #111;
+      line-height: 1.6;
+    }
+
+    /* Windows 95 Callout Boxes (Info/Warning) */
+    .callout-box {
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
+      padding: 10px 12px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .callout-title {
+      font-weight: 800;
+      font-size: 12px;
+      color: #000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .callout-box.info { border-left: 4px solid #000080; }
+    .callout-box.warning { border-left: 4px solid #b8860b; background: #fffff0; }
+    .callout-box.tip { border-left: 4px solid #006400; }
+
+    /* Windows 95 Specs Table */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
+    }
+
+    .spec-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #dfdfdf;
+    }
+
+    .spec-table tr:last-child td { border-bottom: none; }
+
+    .spec-table td:first-child {
+      font-weight: 700;
+      color: #333;
+      width: 40%;
+      background: #f0f0f0;
+      border-right: 1px solid #dfdfdf;
+    }
+
+    .spec-table td:last-child {
+      font-family: 'Fira Code', monospace;
+      color: #000080;
+      font-weight: 600;
+    }
+
+    /* Right Pane: DOS Terminal & Registry Breakdown */
+    .terminal-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Authentic MS-DOS / Command Prompt Window */
+    .terminal-box {
+      background: var(--dos-bg);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
+      font-family: 'Fira Code', monospace;
+      overflow: hidden;
+    }
+
+    .terminal-header {
+      background: var(--win-gray-dark);
+      color: #ffffff;
+      padding: 3px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--win-black);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .terminal-body {
+      padding: 14px;
+      overflow-x: auto;
+      color: var(--dos-text);
+      font-size: 12.5px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .terminal-body .cmd { color: var(--dos-cyan); font-weight: 700; }
+    .terminal-body .flag { color: #ff79c6; }
+    .terminal-body .arg { color: var(--dos-amber); }
+    .terminal-body .comment { color: #808080; font-style: italic; }
+
+    /* Windows 95 Property Grid for Parameters */
+    .param-breakdown-card {
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      box-shadow: inset 1px 1px var(--win-gray-dark);
+      overflow: hidden;
+    }
+
+    .param-breakdown-header {
+      background: var(--win-gray);
+      border-bottom: 1px solid var(--win-gray-dark);
+      padding: 5px 10px;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .param-table th {
+      background: var(--win-gray);
+      border-top: 1px solid var(--win-white);
+      border-left: 1px solid var(--win-white);
+      border-right: 1px solid var(--win-black);
+      border-bottom: 1px solid var(--win-black);
+      padding: 4px 8px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 800;
+      color: #000;
+      text-transform: uppercase;
+    }
+
+    .param-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .param-table tr:last-child td { border-bottom: none; }
+
+    .param-name {
+      font-family: 'Fira Code', monospace;
+      color: #000080;
+      font-weight: 700;
+      font-size: 11.5px;
+      white-space: nowrap;
+    }
+
+    .param-definition {
+      color: #000;
+      font-size: 12px;
+    }
+
+    .param-why {
+      color: #333;
+      font-size: 11.5px;
+      margin-top: 3px;
+    }
+
+    .why-tag {
+      background: #000080;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      margin-right: 4px;
+      display: inline-block;
+    }
+
+    /* Output Verification Container */
+    .output-box {
+      background: #0a0a0a;
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 10px 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 11.5px;
+      color: var(--dos-green);
+      line-height: 1.5;
+    }
+
+    .output-title {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--dos-amber);
+      margin-bottom: 4px;
+    }
+
+    /* Modal Dialog as a True Windows 95 Popup */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-box.report-modal {
+      max-width: 980px;
+      width: 95%;
+      max-height: 90vh;
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-black);
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.7);
+      padding: 3px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-header-bar {
+      background: var(--win-navy);
+      color: #fff;
+      padding: 3px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .report-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 0 8px;
+      margin-top: 4px;
+    }
+
+    .report-tab-btn {
+      background: var(--win-gray);
+      border-top: 2px solid var(--win-white);
+      border-left: 2px solid var(--win-white);
+      border-right: 2px solid var(--win-black);
+      border-bottom: 2px solid var(--win-gray);
+      padding: 4px 12px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      color: #000;
+    }
+
+    .report-tab-btn.active {
+      border-bottom: 2px solid var(--win-white);
+      background: var(--win-white);
+      font-weight: 800;
+    }
+
+    .report-viewport {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 65vh;
+      background: var(--win-white);
+      border-top: 2px solid var(--win-black);
+      border-left: 2px solid var(--win-black);
+      border-right: 2px solid var(--win-white);
+      border-bottom: 2px solid var(--win-white);
+      padding: 20px;
+      color: #000;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 6px 10px;
+      background: var(--win-gray);
+    }
+
+  </style>
         </head>
         <body>
           ${reportData.printHtml}
@@ -2929,6 +3425,24 @@ WHY CHOSEN:           Flushes minified JS assets cached in daemon RAM to load pa
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+
+  
+    // Live Windows 95 System Tray Clock
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      const clockEl = document.getElementById('sys-clock');
+      if (clockEl) {
+        clockEl.innerText = `${hours}:${minutes} ${ampm}`;
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
   </script>
 
