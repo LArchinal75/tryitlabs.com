@@ -2891,6 +2891,30 @@ WHY CHOSEN:           Flushes minified JS assets cached in daemon RAM to load pa
     }
 
 
+    // Open Modal and Inject Report
+    function openExportModal() {
+      const reportData = generateTechnicalReport();
+      document.getElementById('report-html-view').innerHTML = reportData.html;
+      document.getElementById('report-raw-view').innerText = reportData.raw;
+      switchReportTab('html');
+      document.getElementById('export-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('export-modal').style.display = 'none';
+    }
+
+    function closeModalOnOverlay(e) {
+      if (e.target.id === 'export-modal') closeModal();
+    }
+
+    function copyReport() {
+      const rawText = document.getElementById('report-raw-view').innerText;
+      navigator.clipboard.writeText(rawText).then(() => {
+        alert("Full Technical Change Report copied to clipboard!");
+      });
+    }
+
     function downloadReport(format = 'txt') {
       const rawText = document.getElementById('report-raw-view').innerText;
       const mimeType = format === 'md' ? 'text/markdown;charset=utf-8' : 'text/plain;charset=utf-8';
