@@ -933,61 +933,7 @@
       font-size: 0.78rem;
     }
 
-    /* Print Stylesheet for Executive Paper Output */
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-      #report-html-view, #report-html-view * {
-        visibility: visible;
-      }
-      #report-html-view {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background: #fff !important;
-        color: #000 !important;
-        padding: 20px !important;
-      }
-      #report-html-view h2, #report-html-view h3, #report-html-view h4, #report-html-view strong {
-        color: #000 !important;
-      }
-      #report-html-view .report-banner {
-        background: #f1f5f9 !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #0f172a !important;
-      }
-      #report-html-view .meta-grid {
-        background: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
-      }
-      #report-html-view .meta-item strong {
-        color: #475569 !important;
-      }
-      #report-html-view .meta-item span {
-        color: #000 !important;
-      }
-      #report-html-view .report-table th {
-        background: #f1f5f9 !important;
-        color: #000 !important;
-        border: 1px solid #cbd5e1 !important;
-      }
-      #report-html-view .report-table td {
-        border: 1px solid #cbd5e1 !important;
-        color: #1e293b !important;
-      }
-      #report-html-view .code-chip {
-        background: #f1f5f9 !important;
-        color: #000 !important;
-        border: 1px solid #cbd5e1 !important;
-      }
-      #report-html-view .badge-pass {
-        background: #dcfce7 !important;
-        color: #166534 !important;
-        border: 1px solid #86efac !important;
-      }
-    }
+    
 
   </style>
 </head>
@@ -1918,7 +1864,7 @@ EOF
         <button class="action-btn" onclick="copyReport()">📋 Copy Report</button>
         <button class="action-btn export-btn" onclick="downloadReport('md')">⬇️ Download Markdown (.md)</button>
         <button class="action-btn export-btn" onclick="downloadReport('txt')">⬇️ Download Text (.txt)</button>
-        <button class="action-btn export-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+        <button class="action-btn export-btn" onclick="printReport()">🖨️ Print / Save as PDF</button>
         <button class="action-btn" onclick="closeModal()">Close</button>
       </div>
     </div>
@@ -2076,17 +2022,18 @@ EOF
       }
     }
 
+    
     // Build the Complete Executive Engineering Change Report
     function generateTechnicalReport() {
       const totalCards = document.querySelectorAll('.stacked-block').length;
       const completedCards = document.querySelectorAll('.stacked-block.completed').length;
       const pct = Math.round((completedCards / totalCards) * 100);
       const timestamp = new Date().toLocaleString();
-      const isoDate = new Date().toISOString();
       const statusBadge = pct === 100 ? 'SUCCESSFUL / VALIDATED' : `IN PROGRESS (${pct}% Complete)`;
       const studentId = 'ENG-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+      const signHash = 'SHA256-' + Math.random().toString(36).substring(2, 12).toUpperCase();
 
-      // HTML Rendered Report
+      // 1. On-Screen Dark View HTML
       const htmlReport = `
         <div class="report-banner">Try-IT Labs • Enterprise Infrastructure Change Record</div>
         <h2>POST-IMPLEMENTATION TECHNICAL REPORT</h2>
@@ -2106,7 +2053,7 @@ EOF
           </div>
           <div class="meta-item">
             <strong>Change Outcome</strong>
-            <span style="color: ${pct === 100 ? '#10b981' : '#f59e0b'};">${statusBadge}</span>
+            <span style="color: ${pct === 100 ? '#10b981' : '#f59e0b'}; font-weight: 700;">${statusBadge}</span>
           </div>
           <div class="meta-item">
             <strong>Assigned Engineer</strong>
@@ -2254,7 +2201,7 @@ EOF
         <p style="margin-top: 12px; font-size: 0.84rem; color: #94a3b8;">
           <strong>Lead Implementation Engineer:</strong> ${studentId}<br>
           <strong>Security & Architecture Review:</strong> Approved for Cyber Range Deployment<br>
-          <strong>Cryptographic Sign-off Hash:</strong> SHA256-${Math.random().toString(36).substring(2, 12).toUpperCase()}
+          <strong>Cryptographic Sign-off Hash:</strong> ${signHash}
         </p>
 
         <h3>8.0 Appendix A: Command Execution Audit & Architectural Rationale</h3>
@@ -2343,7 +2290,263 @@ EOF
         </div>
       `;
 
-      // Raw Markdown Report
+      // 2. Clean Print-Ready HTML (Designed for multi-page paper output)
+      const printHtml = `
+        <div class="report-header">
+          <div class="classification-badge">Try-IT Labs • Enterprise Infrastructure Change Record</div>
+          <h1>POST-IMPLEMENTATION TECHNICAL REPORT</h1>
+          <div class="report-subtitle">
+            <strong>Change Item:</strong> Bare-Metal Hypervisor Provisioning & Network Fabric Alignment (Episode 0.4)<br>
+            <strong>Target Substrate:</strong> Dell PowerEdge R640 • Dell EMC S3124 Switch Infrastructure
+          </div>
+
+          <table class="meta-box">
+            <tr>
+              <td>
+                <span class="meta-label">Change Record Ref</span>
+                <span class="meta-value">CR-TRYIT-S0-004-PVE</span>
+              </td>
+              <td>
+                <span class="meta-label">Execution Timestamp</span>
+                <span class="meta-value">${timestamp}</span>
+              </td>
+              <td>
+                <span class="meta-label">Change Outcome</span>
+                <span class="badge-success">${statusBadge}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="meta-label">Assigned Engineer</span>
+                <span class="meta-value">${studentId}</span>
+              </td>
+              <td>
+                <span class="meta-label">Target Host FQDN</span>
+                <span class="meta-value">pve.tryitlabs.lan</span>
+              </td>
+              <td>
+                <span class="meta-label">Management IP / VLAN</span>
+                <span class="meta-value">10.10.10.100/24 (VLAN 10)</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <h2>1.0 Executive Summary</h2>
+        <p>
+          This engineering change record documents the successful bare-metal provisioning and network integration of <strong>Proxmox VE 8.x</strong> (Debian 12 Bookworm) on a dedicated <strong>Dell PowerEdge R640</strong> server within the Try-IT Labs cyber range. The primary business and technical objective was establishing a resilient, hardware-isolated virtualization plane capable of hosting multi-tenant enterprise lab simulations without recurring commercial licensing overhead.
+        </p>
+        <p>
+          High availability and bit-rot prevention were achieved by configuring an <strong>OpenZFS RAID-1</strong> root mirror on dual NVMe SSDs via the Dell BOSS-S1 controller. Network security was enforced by binding hypervisor management strictly to <strong>VLAN 10</strong> on the Dell EMC S3124 core switch while provisioning an IEEE 802.1Q VLAN-aware virtual bridge (<span class="code-inline">vmbr0</span>) to facilitate micro-segmentation for upcoming simulated enterprise subnets (VLANs 20, 30, and 40).
+        </p>
+
+        <h2>2.0 Technical Architecture Summary</h2>
+        <p>
+          The compute node operates on dual Intel Xeon processors backed by ECC Registered memory. Operating system binaries reside on a mirrored ZFS pool (<span class="code-inline">rpool</span>) configured with an <span class="code-inline">ashift=12</span> sector boundary (4096-byte native alignment), LZ4 transparent compression, and single-copy dataset parameters. Network switching is handled via embedded interface <span class="code-inline">eno1</span> trunked through <span class="code-inline">vmbr0</span>, with Spanning Tree Protocol (STP) disabled at the software layer to prevent 30-second port listening deadlocks.
+        </p>
+
+        <h2>3.0 System State: Baseline (Before) vs. Desired State (After)</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Infrastructure Plane</th>
+              <th style="width: 38%;">Baseline State (Before Implementation)</th>
+              <th style="width: 40%;">Desired State (Post-Implementation Validation)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Operating System</strong></td>
+              <td>Bare-metal Dell R640 in unprovisioned factory BIOS state. Zero hypervisor kernel installed.</td>
+              <td><span class="badge-success">Verified</span> Hardened Proxmox VE 8.x on Debian 12 Bookworm (Linux 6.8.x kernel).</td>
+            </tr>
+            <tr>
+              <td><strong>Storage Redundancy</strong></td>
+              <td>Raw unpartitioned M.2 NVMe drives. No bit-rot detection or automated drive mirroring.</td>
+              <td><span class="badge-success">Verified</span> OpenZFS RAID-1 mirror (<span class="code-inline">rpool</span>) on <span class="code-inline">nvme0n1</span> & <span class="code-inline">nvme1n1</span> with self-healing checksums.</td>
+            </tr>
+            <tr>
+              <td><strong>Virtual Switching</strong></td>
+              <td>No virtual bridge configured; physical NICs unlinked; zero 802.1Q VLAN trunking capability.</td>
+              <td><span class="badge-success">Verified</span> 802.1Q VLAN-aware bridge (<span class="code-inline">vmbr0</span>) dynamic trunking across VLANs 2-4094.</td>
+            </tr>
+            <tr>
+              <td><strong>Management Access</strong></td>
+              <td>Accessible strictly via Out-of-Band iDRAC9 console; zero Web GUI administration portal.</td>
+              <td><span class="badge-success">Verified</span> TLS 1.3 Web GUI operational at <span class="code-inline">https://10.10.10.100:8006</span> with subscription modal suppressed.</td>
+            </tr>
+            <tr>
+              <td><strong>Package Lifecycle</strong></td>
+              <td>Default APT sources point to paid enterprise repos, throwing 401 Unauthorized errors.</td>
+              <td><span class="badge-success">Verified</span> Fully synced with official community <span class="code-inline">pve-no-subscription</span> repo; updated via <span class="code-inline">dist-upgrade</span>.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>4.0 Implementation Methodology & Steps Followed</h2>
+        <ol>
+          <li><strong>Pre-Flight Cryptographic Verification:</strong> Calculated SHA-256 digest on downloaded Proxmox VE 8.x ISO, validating against official Proxmox PGP release bulletin. Media mapped wire-speed via Dell iDRAC9 Virtual Media.</li>
+          <li><strong>OpenZFS Mirror Allocation:</strong> Selected ZFS RAID-1 root partitioning across BOSS NVMe drives (<span class="code-inline">/dev/nvme0n1</span> and <span class="code-inline">/dev/nvme1n1</span>) with verified <span class="code-inline">ashift=12</span> sector alignment.</li>
+          <li><strong>Layer 3 Static Addressing:</strong> Bound static management IP <span class="code-inline">10.10.10.100/24</span> to physical interface <span class="code-inline">eno1</span>, pointing to core gateway <span class="code-inline">10.10.10.1</span> and pfSense DNS resolver.</li>
+          <li><strong>VLAN-Aware Virtual Switch Orchestration:</strong> Updated <span class="code-inline">/etc/network/interfaces</span> to establish <span class="code-inline">vmbr0</span> with <span class="code-inline">bridge-vlan-aware yes</span>, reloaded live via <span class="code-inline">ifreload -a</span>.</li>
+          <li><strong>Package Lifecycle Hardening:</strong> Purged commercial <span class="code-inline">pve-enterprise.list</span>, populated <span class="code-inline">pve-no-subscription.list</span>, and performed a comprehensive <span class="code-inline">apt dist-upgrade -y</span>.</li>
+          <li><strong>UI Workflow Optimization:</strong> Applied multi-line regex substitution to <span class="code-inline">proxmoxlib.js</span> to neutralize ExtJS subscription popups and restarted <span class="code-inline">pveproxy.service</span>.</li>
+        </ol>
+
+        <h2>5.0 Verification & Operational Acceptance Scorecard</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Test Item / Subsystem</th>
+              <th style="width: 35%;">Validation Command / Test Method</th>
+              <th style="width: 25%;">Expected Benchmark</th>
+              <th style="width: 15%;">Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cryptographic ISO Integrity</strong></td>
+              <td><span class="code-inline">shasum -a 256 proxmox-ve_8.x.iso</span></td>
+              <td>Digest match official release</td>
+              <td><span class="badge-success">PASSED</span></td>
+            </tr>
+            <tr>
+              <td><strong>Root Storage Pool Health</strong></td>
+              <td><span class="code-inline">zpool status rpool</span></td>
+              <td>State: ONLINE (mirror-0 active)</td>
+              <td><span class="badge-success">PASSED</span></td>
+            </tr>
+            <tr>
+              <td><strong>802.1Q Virtual Bridge</strong></td>
+              <td><span class="code-inline">bridge vlan show</span></td>
+              <td>vmbr0: PVID 1, VIDs 2-4094 active</td>
+              <td><span class="badge-success">PASSED</span></td>
+            </tr>
+            <tr>
+              <td><strong>Physical Switchport State</strong></td>
+              <td><span class="code-inline">show interfaces switchport Gi1/0/1</span></td>
+              <td>VLAN 10 Untagged Access / Up</td>
+              <td><span class="badge-success">PASSED</span></td>
+            </tr>
+            <tr>
+              <td><strong>PVE Kernel & Driver Sync</strong></td>
+              <td><span class="code-inline">pveversion -v</span></td>
+              <td>Kernel 6.8.x-pve loaded</td>
+              <td><span class="badge-success">PASSED</span></td>
+            </tr>
+            <tr>
+              <td><strong>Web GUI Administration</strong></td>
+              <td><span class="code-inline">curl -k https://10.10.10.100:8006</span></td>
+              <td>HTTP 200 OK, Zero Nag Popup</td>
+              <td><span class="badge-success">PASSED</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>6.0 Downstream Dependencies & Next Steps (Phase Gate to Episode 0.5)</h2>
+        <p>
+          With Tier-1 compute and virtual switching validated, the foundation is secured for <strong>Season 0 Episode 0.5: pfSense Core Firewall & Router Deployment</strong>. Immediate next steps:
+        </p>
+        <ul>
+          <li>Deploy pfSense CE virtual machine on <span class="code-inline">vmbr0</span> with dedicated WAN uplink and multi-VLAN trunk.</li>
+          <li>Establish DHCP reservation scopes and Unbound DNS forwarders for VLAN 10 (Management), VLAN 20 (Active Directory), and VLAN 30 (Corporate Workstations).</li>
+          <li>Configure inter-VLAN firewall rules enforcing strict isolation between guest lab subnets and the hypervisor management plane.</li>
+        </ul>
+
+        <h2>7.0 Engineering Sign-Off & Conclusion</h2>
+        <p>
+          The Proxmox VE 8.x hypervisor deployment has satisfied all operational criteria and security hardening baselines. The infrastructure is officially signed off and approved for production cyber range virtualization staging.
+        </p>
+        <div class="sign-off-box">
+          <div class="sign-line">Lead Implementation Engineer: ${studentId}</div>
+          <div class="sign-line">Security & Architecture Sign-Off: APPROVED (${signHash})</div>
+        </div>
+
+        <h2>8.0 Appendix A: Command Execution Audit & Architectural Rationale</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 24%;">Command / Directive</th>
+              <th style="width: 36%;">Operational Purpose (What it does)</th>
+              <th style="width: 40%;">Architectural Rationale (Why this value / flag was chosen)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="code-inline">shasum -a 256</span></td>
+              <td>Calculates NIST SHA-256 cryptographic digest of the ISO file.</td>
+              <td>Guarantees mathematical collision-resistance against supply-chain tampering and bit-rot; legacy SHA-1 is cryptographically broken.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">dd bs=4M oflag=sync</span></td>
+              <td>Raw byte-for-byte block write to physical storage medium.</td>
+              <td>4MB buffer aligns with flash memory page sizes to speed writes by 15x; <span class="code-inline">oflag=sync</span> forces physical NAND flush before exit to prevent file corruption.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">ashift=12</span></td>
+              <td>Sets ZFS vdev minimum allocation sector size to 4096 bytes ($2^{12}$).</td>
+              <td>Modern NVMe flash writes in 4KB physical pages; setting legacy 512-byte (<span class="code-inline">ashift=9</span>) incurs a 50% write penalty and doubles SSD flash wear.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">compress=lz4</span></td>
+              <td>Activates real-time lossless LZ4 block data compression.</td>
+              <td>Operates at gigabytes/sec with near-zero CPU load; because fewer physical bytes hit the SSD, enabling LZ4 actually increases overall I/O performance.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">copies=1</span></td>
+              <td>Sets dataset-level file redundancy multiplier in ZFS.</td>
+              <td>Redundancy is already handled at the physical drive mirror level; setting copies=2 would store 4 physical copies of every block, wasting 75% of NVMe capacity.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">10.10.10.100/24</span></td>
+              <td>Static IPv4 host address assignment on management plane.</td>
+              <td>Reserves <span class="code-inline">.1-.99</span> for network appliances (switches, firewalls, iDRACs), standardizing <span class="code-inline">.100-.199</span> for virtualization cluster nodes.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">Gateway: 10.10.10.1</span></td>
+              <td>Default router interface for VLAN 10 management subnet.</td>
+              <td>First usable host IP in the subnet is standard for core firewall interfaces, routing all egress traffic through pfSense security policies.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">iface eno1 inet manual</span></td>
+              <td>Configures physical NIC without assigning a Layer 3 IP address.</td>
+              <td>Assigning an IP directly to the physical NIC causes packets to bypass the virtual switch bridge; NIC must act purely as an unaddressed Layer 2 conduit.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">bridge-stp off</span></td>
+              <td>Disables Spanning Tree Protocol on the software bridge.</td>
+              <td>Loop protection is handled upstream by the S3124 switch; host-level STP introduces 30-second listening delays on boot and triggers switch TCNs.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">bridge-fd 0</span></td>
+              <td>Sets bridge Forwarding Delay timer to 0 seconds.</td>
+              <td>Eliminates forwarding delays, ensuring the bridge transmits Ethernet frames the microsecond a virtual machine interface links up.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">bridge-vlan-aware yes</span></td>
+              <td>Enables IEEE 802.1Q hardware VLAN tagging inside the Linux bridge.</td>
+              <td>Allows guest VMs on different VLANs (AD, Endpoints, Red Team) to trunk through a single virtual bridge without creating multiple bridge interfaces.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">apt dist-upgrade -y</span></td>
+              <td>Comprehensive package upgrade solving dependency tree changes.</td>
+              <td>Standard <span class="code-inline">apt upgrade</span> refuses to install new dependencies, holding back critical PVE kernel modules and ZFS drivers; <span class="code-inline">dist-upgrade</span> ensures full synchronization.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">sed -Ezi.bak ...</span></td>
+              <td>Multi-line inline regex substitution on <span class="code-inline">proxmoxlib.js</span>.</td>
+              <td><span class="code-inline">-z</span> loads file as single null-terminated stream to match multi-line ExtJS patterns; <span class="code-inline">-i.bak</span> creates a safe backup copy; <span class="code-inline">void({})</span> safely voids the modal call.</td>
+            </tr>
+            <tr>
+              <td><span class="code-inline">systemctl restart pveproxy</span></td>
+              <td>Restarts Proxmox HTTPS web server daemon on TCP port 8006.</td>
+              <td>Flushes minified JavaScript assets cached in daemon RAM, forcing client browsers to load the patched script on subsequent page visits.</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+
+      // 3. Raw Markdown Report
       const rawReport = `# ==============================================================================
 # ENTERPRISE INFRASTRUCTURE CHANGE & IMPLEMENTATION REPORT
 # ==============================================================================
@@ -2442,7 +2645,7 @@ approved for production cyber range virtualization staging.
 
 Lead Engineer:        ${studentId}
 Security Review:      Approved for Cyber Range Staging
-Signature Hash:       SHA256-${Math.random().toString(36).substring(2, 12).toUpperCase()}
+Signature Hash:       ${signHash}
 
 --------------------------------------------------------------------------------
 8.0 APPENDIX A: COMMAND EXECUTION AUDIT & ARCHITECTURAL RATIONALE
@@ -2504,34 +2707,190 @@ WHAT IT DOES:         Restarts Proxmox HTTPS web server daemon on TCP port 8006.
 WHY CHOSEN:           Flushes minified JS assets cached in daemon RAM to load patched file.
 ==============================================================================`;
 
-      return { html: htmlReport, raw: rawReport, pct: pct, studentId: studentId };
+      return { html: htmlReport, printHtml: printHtml, raw: rawReport, pct: pct, studentId: studentId };
     }
 
-    // Open Modal and Inject Report
-    function openExportModal() {
+    // Dedicated Clean Print Window (Eliminates all CSS print overlapping / jamming bugs)
+    function printReport() {
       const reportData = generateTechnicalReport();
-      document.getElementById('report-html-view').innerHTML = reportData.html;
-      document.getElementById('report-raw-view').innerText = reportData.raw;
-      switchReportTab('html');
-      document.getElementById('export-modal').style.display = 'flex';
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        alert("Please allow popups to generate the printable report.");
+        return;
+      }
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <title>Try-IT Labs | CR-TRYIT-S0-004-PVE Implementation Report</title>
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+          <style>
+            @page {
+              size: letter portrait;
+              margin: 0.65in 0.65in 0.65in 0.65in;
+            }
+            * { box-sizing: border-box; margin: 0; padding: 0; }
+            body {
+              font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+              color: #0f172a;
+              background: #ffffff;
+              font-size: 9.5pt;
+              line-height: 1.55;
+              padding: 10px;
+            }
+            .report-header {
+              border-bottom: 2px solid #0284c7;
+              padding-bottom: 12px;
+              margin-bottom: 16px;
+            }
+            .classification-badge {
+              display: inline-block;
+              background: #f0f9ff;
+              border: 1px solid #bae6fd;
+              color: #0284c7;
+              font-size: 7.5pt;
+              font-weight: 800;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              padding: 3px 8px;
+              border-radius: 4px;
+              margin-bottom: 8px;
+            }
+            h1 {
+              font-size: 16pt;
+              font-weight: 800;
+              color: #0f172a;
+              letter-spacing: -0.02em;
+              margin-bottom: 4px;
+            }
+            .report-subtitle {
+              font-size: 8.5pt;
+              color: #64748b;
+              margin-bottom: 12px;
+            }
+            .meta-box {
+              width: 100%;
+              border-collapse: collapse;
+              margin-bottom: 18px;
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              border-radius: 6px;
+            }
+            .meta-box td {
+              padding: 7px 12px;
+              border: 1px solid #e2e8f0;
+              font-size: 8.5pt;
+              width: 33.33%;
+            }
+            .meta-label {
+              color: #64748b;
+              font-size: 7pt;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+              display: block;
+              margin-bottom: 2px;
+            }
+            .meta-value {
+              font-weight: 600;
+              color: #0f172a;
+              font-family: 'Fira Code', monospace;
+            }
+            .badge-success {
+              color: #15803d;
+              font-weight: 700;
+              background: #dcfce7;
+              border: 1px solid #bbf7d0;
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-size: 7.5pt;
+              display: inline-block;
+            }
+            h2 {
+              font-size: 11pt;
+              font-weight: 800;
+              color: #0369a1;
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+              border-bottom: 1px solid #cbd5e1;
+              padding-bottom: 4px;
+              margin-top: 18px;
+              margin-bottom: 8px;
+              page-break-after: avoid;
+            }
+            p { margin-bottom: 8px; text-align: justify; }
+            ol, ul { margin-left: 20px; margin-bottom: 10px; }
+            li { margin-bottom: 5px; }
+            table.data-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 8px;
+              margin-bottom: 14px;
+              font-size: 8.5pt;
+            }
+            table.data-table th {
+              background: #f1f5f9;
+              color: #334155;
+              font-weight: 700;
+              text-align: left;
+              padding: 6px 10px;
+              border: 1px solid #cbd5e1;
+              font-size: 7.5pt;
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+            }
+            table.data-table td {
+              padding: 6px 10px;
+              border: 1px solid #e2e8f0;
+              vertical-align: top;
+              line-height: 1.45;
+            }
+            tr { page-break-inside: avoid; }
+            .code-inline {
+              font-family: 'Fira Code', monospace;
+              font-size: 7.8pt;
+              background: #f1f5f9;
+              border: 1px solid #e2e8f0;
+              padding: 1px 4px;
+              border-radius: 3px;
+              color: #0284c7;
+            }
+            .sign-off-box {
+              margin-top: 18px;
+              border-top: 1px dashed #cbd5e1;
+              padding-top: 12px;
+              display: flex;
+              justify-content: space-between;
+              page-break-inside: avoid;
+            }
+            .sign-line {
+              width: 45%;
+              border-top: 1px solid #94a3b8;
+              padding-top: 4px;
+              font-size: 8pt;
+              color: #64748b;
+              margin-top: 24px;
+            }
+          </style>
+        </head>
+        <body>
+          ${reportData.printHtml}
+          <script>
+            window.onload = function() {
+              window.print();
+            };
+          <\/script>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
     }
 
-    function closeModal() {
-      document.getElementById('export-modal').style.display = 'none';
-    }
 
-    function closeModalOnOverlay(e) {
-      if (e.target.id === 'export-modal') closeModal();
-    }
-
-    function copyReport() {
-      const rawText = document.getElementById('report-raw-view').innerText;
-      navigator.clipboard.writeText(rawText).then(() => {
-        alert("Full Technical Change Report copied to clipboard!");
-      });
-    }
-
-    // Direct File Download for Report (.md or .txt)
     function downloadReport(format = 'txt') {
       const rawText = document.getElementById('report-raw-view').innerText;
       const mimeType = format === 'md' ? 'text/markdown;charset=utf-8' : 'text/plain;charset=utf-8';
